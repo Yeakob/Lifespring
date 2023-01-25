@@ -1,0 +1,415 @@
+@import url(https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700;900&display=swap);
+/* @import url('http://db.onlinewebfonts.com/c/aec382221b330b8581963c1bcc7c61d9?family=Nikosh');
+@import url('https://fonts.googleapis.com/css?family=Anek+Bangla&display=swap'); */
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+Bengali&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -o-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+body {
+    font-family: "Source Sans Pro", sans-serif !important;
+    font-size: 12px;
+    line-height: 30px;
+    color: #777;
+    margin: 0px;
+    background-color: #FFFFFF;
+    background-position: left top;
+    background-image: url(../images/bgimg.jpg);
+}
+
+.bangla_font {
+    font-family: 'Noto Sans Bengali', serif;
+    font-size: 13px;
+}
+
+.topbg {
+    font-family: "Source Sans Pro", sans-serif !important;
+    font-size: 11px;
+    color: #000000;
+    text-decoration: none;
+    background-image: url(../images/topbgimg.jpg);
+}
+
+.org-details {
+    text-align: center;
+    padding: 10px 0
+}
+
+.org-details h1,
+.org-details h2,
+.org-details h3,
+.org-details h4,
+.org-details h5,
+.org-details h6 {
+    line-height: 22px;
+}
+
+.org-details label {
+    line-height: 24px;
+    display: block !important;
+}
+
+.container {
+    margin: 0 auto;
+    position: relative;
+    padding: 20px;
+    /* border: 1px solid #dadada; */
+}
+
+fieldset {
+    display: block;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    border: 2px groove (internal value) !important;
+}
+
+legend {
+    /* width: unset !important; */
+    color: #fff !important;
+    background-color: cadetblue;
+    border-radius: 30px;
+    padding: 4px 10px;
+}
+
+form.custom-form {
+    background: #F9F9F9;
+    padding: 20px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    margin: 18px 0;
+}
+
+.form-control.is-valid,
+.was-validated .form-control:valid {
+    background-image: unset;
+}
+
+form.custom-form h3 {
+    display: block;
+    font-size: 30px;
+    font-weight: 300;
+    margin-bottom: 10px;
+    margin-top: 0px;
+}
+
+form.custom-form h4 {
+    margin: 5px 0 15px;
+    display: block;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+form.custom-form input[type="text"],
+form.custom-form input[type="number"],
+form.custom-form input[type="date"],
+form.custom-form input[type="password"],
+form.custom-form input[type="email"],
+form.custom-form input[type="tel"],
+form.custom-form input[type="url"],
+form.custom-form textarea,
+form.custom-form select,
+form.custom-form label.form-check-label,
+form.custom-form button[type="submit"] {
+    font: 400 14px/16px Arial, Helvetica, sans-serif, Verdana;
+    width: 100%;
+    border: 1px solid #ccc;
+    background: #FFF;
+    margin: 0 0 5px;
+    padding: 10px;
+    height: 30px !important;
+    font-size: 12px !important;
+}
+
+form.custom-form select {
+    padding: 5px 10px !important;
+}
+
+form.custom-form input[type="text"]:hover,
+form.custom-form input[type="number"]:hover,
+form.custom-form input[type="date"]:hover,
+form.custom-form input[type="password"]:hover,
+form.custom-form input[type="email"]:hover,
+form.custom-form input[type="tel"]:hover,
+form.custom-form input[type="url"]:hover,
+form.custom-form textarea:hover,
+form.custom-form select:hover {
+    -webkit-transition: border-color 0.3s ease-in-out;
+    -moz-transition: border-color 0.3s ease-in-out;
+    transition: border-color 0.3s ease-in-out;
+    border: 1px solid #aaa;
+}
+
+form.custom-form label.form-check-label {
+    border: none;
+}
+
+label.form-check-label {
+    justify-content: normal;
+}
+
+form.custom-form select {
+    width: 100% !important;
+}
+
+form.custom-form textarea {
+    height: 56px !important;
+    width: 100% !important;
+    resize: none;
+}
+
+form.custom-form button[type="submit"] {
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    background: #4CAF50;
+    color: #FFF;
+    margin: 0 0 5px;
+    padding: 8px;
+    font-size: 15px;
+}
+
+form.custom-form button[type="submit"]:hover {
+    background: cornflowerblue;
+    -webkit-transition: background 0.3s ease-in-out;
+    -moz-transition: background 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out;
+}
+
+form.custom-form button[type="submit"]:active {
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.copyright {
+    text-align: center;
+}
+
+form.custom-form input:focus,
+form.custom-form textarea:focus {
+    outline: 0;
+    border: 1px solid #aaa;
+}
+
+::-webkit-input-placeholder {
+    color: #888;
+}
+
+:-moz-placeholder {
+    color: #888;
+}
+
+::-moz-placeholder {
+    color: #888;
+}
+
+:-ms-input-placeholder {
+    color: #888;
+}
+
+header .container {
+    background-color: #0f9515;
+    color: #fff;
+    padding-bottom: 5px;
+}
+
+header .container a {
+    color: #fff;
+}
+
+.logo-container-left {
+    max-width: 90px;
+    position: absolute;
+    left: 0;
+    top: 10px;
+}
+
+.logo-container-right {
+    max-width: 90px;
+    position: absolute;
+    right: 30px;
+    top: 15px;
+}
+
+.logo-container-left img.logo {
+    max-width: 90px;
+}
+
+.logo-container-right img.logo {
+    max-width: 120px;
+}
+
+section.section {
+    padding: 20px;
+    padding-bottom: 9px;
+    margin-bottom: 40px;
+}
+
+.box-shadow {
+    -webkit-box-shadow: 0 0 10px #807e7e;
+    -moz-box-shadow: 0 0 10px #807e7e;
+    box-shadow: 0 0 4px #807e7e;
+}
+
+footer .container {
+    background-color: darkgreen;
+    padding-top: 20px;
+    padding-bottom: 0px;
+    color: #fff;
+    border: 1px solid #dadada;
+    margin-bottom: 1px;
+}
+
+footer .container a {
+    color: #fff;
+}
+
+nav.navbar {
+    padding: 0;
+    background-color: #09C743 !important;
+}
+
+.navbar-brand {
+    margin-right: 0;
+}
+
+.navbar-nav {
+    margin: 0 auto;
+}
+
+ul.navbar-nav li.nav-item {
+    border: 1px solid yellow;
+    padding: 0 5px;
+    margin: 0;
+    line-height: 14px;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+ul.navbar-nav li.nav-item:hover:not(.active) {
+    background-color: #85D649;
+}
+
+ul.navbar-nav li.nav-item a {
+    color: #fff !important;
+    font-size: 14px;
+}
+
+.footer-top p,
+.footer-top ul {
+    margin: 0;
+}
+
+.footer-top {
+    background-color: lightgreen;
+    color: #111;
+    text-align: center;
+    font-size: 12px;
+    line-height: 20px;
+    padding: 0;
+}
+
+p.vas-query {
+    font-weight: bold;
+    font-style: italic;
+}
+
+ul.social-icons {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+ul.social-icons li {
+    position: relative;
+    list-style: none;
+}
+
+ul.social-icons li a {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    margin: 0 9px;
+    text-decoration: none;
+    font-size: 20px;
+    border-radius: 50%;
+    color: #e2e2e2;
+    box-shadow: inset -1px -1px 2px rgb(0 0 0 / 20%), 2px 2px 5px rgb(0 0 0 / 20%);
+    transition: 0.5s;
+}
+
+ul.social-icons li a:before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+ul.social-icons li a .fab {
+    color: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+ul.social-icons li a:hover {
+    color: #999;
+    transform: translateY(-5px);
+    box-shadow: inset -1px -1px 2px rgba(0, 0, 0, 0.2), 2px 24px 10px rgba(0, 0, 0, 0.1);
+}
+
+ul.social-icons li:nth-child(1) a:before {
+    background-color: #3b5998;
+}
+
+ul.social-icons li:nth-child(2) a:before {
+    background: #0a66c2;
+}
+
+ul.social-icons li:nth-child(3) a:before {
+    background: #1da1f2;
+}
+
+ul.social-icons li:nth-child(4) a:before {
+    background: #ff0000;
+}
+
+ul.social-icons li:nth-child(5) a:before {
+    background: #c32aa3;
+}
+
+ul.social-icons li a svg {
+    z-index: 9;
+}
+
+td.textWrap {
+    word-break: break-word !important;
+}
+
+li.nav-item.active {
+    background-color: #61D05B;
+}
+
+.textTransform {
+    text-transform: uppercase;
+}
+
+@media only screen and (max-width:425px) {}

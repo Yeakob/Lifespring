@@ -1,0 +1,876 @@
+function showMessage(msg, focusId, theForm) {
+    alert(msg);
+    theForm[focusId].focus();
+    return false;
+}
+
+function showMessageExp(msg, focusId, theForm) {
+    alert(msg);
+    $(theForm).find('.' + focusId).focus();
+    return false;
+}
+
+const isValidEnglishText = str => {
+    const regex = /^[~`!@#$%^&*()_+=[\]\{}|;':",.\/<>?a-zA-Z0-9- \n]+$/;
+    return regex.test(str);
+};
+
+function isValidEnglish(stringValue) {
+    var isValid = isValidEnglishText(stringValue);
+    return isValid;
+}
+
+function bangla_only(e) {
+    // Backspace and Space Hipen and Delete
+    var charCode = (e.which) ? e.which : e.keyCode;
+    if (!charCode || charCode == 8 || charCode == 16 || charCode == 17 || charCode == 32 || charCode == 45 || charCode == 46) return true;
+
+    var k;
+    k = document.all ? parseInt(e.keyCode) : parseInt(e.which);
+    var res = (k >= 2432 && k <= 2559);
+    if (!res) {
+        alert('Only "Bangla Unicode" is accepted!');
+    }
+    return res;
+}
+
+function bangla_only_string(str, elm = null) {
+    // Space Hipen
+    for (let i = 0; i < str.length; i++) {
+        var charCode = str.charCodeAt(i);
+        var res = ((charCode >= 2432 && charCode <= 2559) || charCode == 8 || charCode == 16 || charCode == 17 || charCode == 32 || charCode == 45 || charCode == 46 || charCode == 47 || charCode == 13 || charCode == 44 || charCode == 59 || charCode == 58 || charCode == 2404 || charCode == 40 || charCode == 41);
+        if (!res) {
+            if (elm) {
+                alert('Only "Bangla Unicode" is accepted!');
+                $(elm).focus();
+            }
+            return false;
+        }
+    }
+    return true;
+}
+
+function isValidDateOfBirth(theForm) {
+    theForm.age_calculated.value = '';
+
+    var dobDate = theForm.dob.value;
+    var ageLimitDate = postInfo.age_calculate_date;
+
+    if (!moment(dobDate).isValid()) {
+        return showMessage("Please enter a valid Date of Birth!", 'dob', theForm);
+    }
+    if (!moment(ageLimitDate).isValid()) {
+        return showMessage("Please enter a valid Age Calculate Date!", 'dob', theForm);
+    }
+
+    //theForm.dob.value = moment(theForm.dob.value).format('YYYY-MM-DD');
+
+    var dobDate = new Date(theForm.dob.value);
+    dobDate.setDate(dobDate.getDate() - 1);
+    var ageLimitDate = new Date(postInfo.age_calculate_date);
+
+    var dobYear = dobDate.getFullYear();
+    var dobMonth = dobDate.getMonth();// + 1;
+    var dobDay = dobDate.getDate();
+
+    var limitYear = ageLimitDate.getFullYear();
+    var limitMonth = ageLimitDate.getMonth();// + 1;
+    var limitDay = ageLimitDate.getDate();
+
+    var dateLimit = moment([limitYear, limitMonth, limitDay]);
+    var dob = moment([dobYear, dobMonth, dobDay]);
+
+    var years = dateLimit.diff(dob, 'year');
+    dob.add(years, 'years');
+    var months = dateLimit.diff(dob, 'months');
+    dob.add(months, 'months');
+    var days = dateLimit.diff(dob, 'days');
+
+    theForm.age_calculated.value = years + ' Years ' + months + ' Months ' + days + ' Days';
+
+    var age_limit_min = postInfo.min_age;
+    var age_limit_max = postInfo.max_age;
+
+    if (theForm.quota) {
+        var ffqId = theForm.quota.value;
+        if (ffqId == 1 || ffqId == 2 || ffqId == 4) {
+            age_limit_max = postInfo.quota_age;
+        }
+    }
+    if (theForm.dep_status) {
+        if (theForm.dep_status && theForm.dep_status.value == 4) {
+            if (age_limit_max < postInfo.dept_age) {
+                age_limit_max = postInfo.dept_age;
+            }
+        }
+    }
+
+    if (years < age_limit_min) {
+        return 2;
+    }
+
+    if (years > age_limit_max) {
+        if (age_limit_max > postInfo.quota_age || !postInfo.age_calculate_date_covid) {
+            return 3;
+        }
+        var covidAge = getCovidAge(dobDate, theForm);
+        if (covidAge.years > age_limit_max) {
+            return 3;
+        }
+        if (covidAge.years == age_limit_max && (covidAge.months > 0 || covidAge.days > 0)) {
+            return 3;
+        }
+    }
+    if (years == age_limit_max && (months > 0 || days > 0)) {
+        if (age_limit_max > postInfo.quota_age || !postInfo.age_calculate_date_covid) {
+            return 3;
+        }
+        var covidAge = getCovidAge(dobDate, theForm);
+        if (covidAge.years == age_limit_max && (covidAge.months > 0 || covidAge.days > 0)) {
+            return 3;
+        }
+    }
+
+    return 0;
+}
+
+function getCovidAge(dobDate, theForm) {
+    var covidAge = {};
+    var ageLimitDate = new Date(postInfo.age_calculate_date_covid);
+    var limitYear = ageLimitDate.getFullYear();
+    var limitMonth = ageLimitDate.getMonth();// + 1;
+    var limitDay = ageLimitDate.getDate();
+    var dateLimit = moment([limitYear, limitMonth, limitDay]);
+
+    var dobYear = dobDate.getFullYear();
+    var dobMonth = dobDate.getMonth();// + 1;
+    var dobDay = dobDate.getDate();
+    var dob = moment([dobYear, dobMonth, dobDay]);
+
+    covidAge.years = dateLimit.diff(dob, 'year');
+    dob.add(covidAge.years, 'years');
+    covidAge.months = dateLimit.diff(dob, 'months');
+    dob.add(covidAge.months, 'months');
+    covidAge.days = dateLimit.diff(dob, 'days');
+
+    theForm.age_calculated.value = covidAge.years + ' Years ' + covidAge.months + ' Months ' + covidAge.days + ' Days';
+
+    return covidAge;
+}
+
+function validateForm(theForm) {
+    try {
+        if (!theForm.name.value) {
+            return showMessage("Please Enter Applicant's Name.", 'name', theForm);
+        }
+        if (theForm.name.value.length < 3 || !isValidEnglish(theForm.name.value)) {
+            return showMessage("Please Enter Valid Applicant's Name.", 'name', theForm);
+        }
+        if (!theForm.name_bn.value) {
+            return showMessage("দয়াকরে আবেদনকারীর নাম বাংলায় প্রবেশ করান", 'name_bn', theForm);
+        }
+        if (!bangla_only_string(theForm.name_bn.value)) {
+            return showMessage("দয়াকরে আবেদনকারীর নাম বাংলায় সঠিকভাবে প্রবেশ করান", 'name_bn', theForm);
+        }
+        if (!theForm.father.value) {
+            return showMessage("Please Enter Father's Name.", 'father', theForm);
+        }
+        if (theForm.father.value.length < 3 || !isValidEnglish(theForm.father.value)) {
+            return showMessage("Please Enter Valid Father's Name.", 'father', theForm);
+        }
+        if (!theForm.father_bn.value) {
+            return showMessage("দয়াকরে পিতার নাম বাংলায় প্রবেশ করান", 'father_bn', theForm);
+        }
+        if (!bangla_only_string(theForm.father_bn.value)) {
+            return showMessage("দয়াকরে পিতার নাম বাংলায় সঠিকভাবে প্রবেশ করান", 'father_bn', theForm);
+        }
+        if (!theForm.mother.value) {
+            return showMessage("Please Enter Mother's Name.", 'mother', theForm);
+        }
+        if (theForm.mother.value.length < 3 || !isValidEnglish(theForm.mother.value)) {
+            return showMessage("Please Enter Valid Mother's Name.", 'mother', theForm);
+        }
+        if (!theForm.mother_bn.value) {
+            return showMessage("দয়াকরে মাতার নাম বাংলায় প্রবেশ করান", 'mother_bn', theForm);
+        }
+        if (!bangla_only_string(theForm.mother_bn.value)) {
+            return showMessage("দয়াকরে মাতার নাম বাংলায় সঠিকভাবে প্রবেশ করান", 'mother_bn', theForm);
+        }
+
+        if (!theForm.dob.value) {
+            return showMessage("Please Select Date of Birth.", 'dob', theForm);
+        }
+        var dobVal = isValidDateOfBirth(theForm);
+        if (dobVal == 1) {
+            return showMessage("Please enter a valid Date of Birth!", 'dob', theForm);
+        } else if (dobVal == 2) {
+            return showMessage("Please enter a valid Date of Birth (" + theForm.age_calculated.value + ") (Under Age)!", 'dob', theForm);
+        } else if (dobVal == 3) {
+            return showMessage("Please enter a valid Date of Birth (" + theForm.age_calculated.value + ") (Over Age)!", 'dob', theForm);
+        }
+
+        if (theForm.nationality.selectedIndex <= 0) {
+            return showMessage("Please Select Nationality.", 'nationality', theForm);
+        }
+        if (theForm.religion.selectedIndex <= 0) {
+            return showMessage("Please Select Religion.", 'religion', theForm);
+        }
+        if (theForm.gender.selectedIndex <= 0) {
+            return showMessage("Please Select Gender.", 'gender', theForm);
+        }
+
+        if (theForm.nid.value <= 0 && theForm.breg.value <= 0) {
+            return showMessage("National ID & Birth Registration both must not be blank!", 'nid', theForm);
+        }
+        if (theForm.nid.value == 1) {
+            if (!theForm.nid_no.value) {
+                return showMessage("Please enter National ID No!", 'nid_no', theForm);
+            }
+            if (!(theForm.nid_no.value.length == 10 || theForm.nid_no.value.length == 13 || theForm.nid_no.value.length == 17)) {
+                return showMessage("Please enter a Valid National ID No!", 'nid_no', theForm);
+            }
+        }
+        if (theForm.breg.value == 1) {
+            if (!theForm.breg_no.value) {
+                return showMessage("Please enter Birth Registration No!", 'breg_no', theForm);
+            }
+            if (!(theForm.breg_no.value.length == 16 || theForm.breg_no.value.length == 17)) {
+                return showMessage("Please enter a Valid Birth Registration No!", 'breg_no', theForm);
+            }
+        }
+
+        if (theForm.passport.selectedIndex <= 0) {
+            return showMessage("Please Select Passport.", 'passport', theForm);
+        }
+        if (theForm.passport.value == 1 && (!theForm.passport_no.value || !isValidEnglish(theForm.passport_no.value))) {
+            return showMessage("Please enter valid Passport No!", 'passport_no', theForm);
+        }
+        if (theForm.marital_status.selectedIndex <= 0) {
+            return showMessage("Please Select Marital Status.", 'marital_status', theForm);
+        }
+        if (theForm.marital_status.value == 1 && (!theForm.spouse_name.value || !isValidEnglish(theForm.spouse_name.value))) {
+            return showMessage("Please enter valid Spouse Name!", 'spouse_name', theForm);
+        }
+
+        if (!theForm.mobile.value) {
+            return showMessage("Please Enter Mobile No.", 'mobile', theForm);
+        }
+        if (!theForm.confirm_mobile.value) {
+            return showMessage("Please Enter Confirm Mobile No.", 'confirm_mobile', theForm);
+        }
+        if (theForm.mobile.value != theForm.confirm_mobile.value) {
+            return showMessage("Mobile No & Confirm Mobile No not match!", 'confirm_mobile', theForm);
+        }
+        if (!theForm.mobile.value.startsWith("01") || isNaN(theForm.mobile.value) || theForm.mobile.value.length != 11) {
+            return showMessage("Please Enter a Valid Mobile Number!", 'mobile', theForm);
+        }
+
+        if (!theForm.email.value) {
+            return showMessage("Please Enter Email Address!", 'email', theForm);
+        }
+        const validateEmail = (email) => {
+            return email.match(
+                /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+        };
+        if (!validateEmail(theForm.email.value)) {
+            return showMessage("Please Enter a Valid Email Address!", 'email', theForm);
+        }
+        if (theForm.quota && theForm.quota.selectedIndex <= 0) {
+            return showMessage("Please Select Quota.", 'quota', theForm);
+        }
+        if (theForm.dep_status && theForm.dep_status.selectedIndex <= 0) {
+            return showMessage("Please Select Departmental Status.", 'dep_status', theForm);
+        }
+
+        if (!theForm.present_careof.value || !isValidEnglish(theForm.present_careof.value)) {
+            return showMessage("Please Enter a valid Present Careof!", 'present_careof', theForm);
+        }
+        if (!theForm.present_village.value || !isValidEnglish(theForm.present_village.value)) {
+            return showMessage("Please Enter a valid Present Village/Town/Road/House/Flat!", 'present_village', theForm);
+        }
+        if (theForm.present_district.selectedIndex <= 0) {
+            return showMessage("Please Select Present District!", 'present_district', theForm);
+        }
+        if (theForm.present_upazila.selectedIndex <= 0) {
+            return showMessage("Please Select Present Upazila/Thana!", 'present_upazila', theForm);
+        }
+        if (!theForm.present_post.value || !isValidEnglish(theForm.present_post.value)) {
+            return showMessage("Please Enter a valid Present Post Office!", 'present_post', theForm);
+        }
+        if (!theForm.present_postcode.value) {
+            return showMessage("Please Enter a Present Post Code!", 'present_postcode', theForm);
+        } else if (theForm.present_postcode.value < 1000 || theForm.present_postcode.value > 9999) {
+            return showMessage("Please Enter a Valid Present Post Code!", 'present_postcode', theForm);
+        }
+
+        if (!theForm.same_as_present.checked) {
+            if (!theForm.permanent_careof.value || !isValidEnglish(theForm.permanent_careof.value)) {
+                return showMessage("Please Enter a valid Permanent Careof!", 'permanent_careof', theForm);
+            }
+            if (!theForm.permanent_village.value || !isValidEnglish(theForm.permanent_village.value)) {
+                return showMessage("Please Enter a valid Permanent Village/Town/Road/House/Flat!", 'permanent_village', theForm);
+            }
+            if (theForm.permanent_district.selectedIndex <= 0) {
+                return showMessage("Please Select Permanent District!", 'permanent_district', theForm);
+            }
+            if (theForm.permanent_upazila.selectedIndex <= 0) {
+                return showMessage("Please Select Permanent Upazila/Thana!", 'permanent_upazila', theForm);
+            }
+            if (!theForm.permanent_post.value || !isValidEnglish(theForm.permanent_post.value)) {
+                return showMessage("Please Enter a valid Permanent Post Office!", 'permanent_post', theForm);
+            }
+            if (!theForm.permanent_postcode.value) {
+                return showMessage("Please Enter a Permanent Post Code!", 'permanent_postcode', theForm);
+            } else if (theForm.permanent_postcode.value < 1000 || theForm.permanent_postcode.value > 9999) {
+                return showMessage("Please Enter a Valid Permanent Post Code!", 'permanent_postcode', theForm);
+            }
+        } else {
+            if (theForm.permanent_district.selectedIndex <= 0) {
+                return showMessage("Please Select Permanent District!", 'permanent_district', theForm);
+            }
+            if (theForm.permanent_upazila.selectedIndex <= 0) {
+                return showMessage("Please Select Permanent Upazila/Thana!", 'permanent_upazila', theForm);
+            }
+        }
+
+
+        if (postInfo.jsc_active == 1 && (postInfo.jsc_required == 1 || theForm.if_applicable_jsc.checked)) {
+            if (theForm.jsc_exam.selectedIndex <= 0) {
+                return showMessage("Please Select JSC Exam!", 'jsc_exam', theForm);
+            }
+            if (theForm.jsc_board.selectedIndex <= 0) {
+                return showMessage("Please Select JSC Board!", 'jsc_board', theForm);
+            }
+            if (!theForm.jsc_roll.value) {
+                return showMessage("Please Enter a JSC Roll No!", 'jsc_roll', theForm);
+            }
+            if (theForm.jsc_result_type.selectedIndex <= 0) {
+                return showMessage("Please Select JSC Result Type!", 'jsc_result_type', theForm);
+            }
+            if ((theForm.jsc_result_type.value == 4 || theForm.jsc_result_type.value == 5) && theForm.jsc_result.value <= 0) {
+                return showMessage("Please Enter a JSC Result!", 'jsc_result', theForm);
+            }
+            if (theForm.jsc_result_type.value == 4 && (theForm.jsc_result.value < 1 || theForm.jsc_result.value > 4)) {
+                return showMessage("Please enter a valid JSC GPA!", 'jsc_result', theForm);
+            } else if (theForm.jsc_result_type.value == 5 && (theForm.jsc_result.value < 1 || theForm.jsc_result.value > 5)) {
+                return showMessage("Please enter a valid JSC GPA!", 'jsc_result', theForm);
+            }
+            if (!theForm.jsc_institute.value || !isValidEnglish(theForm.jsc_institute.value)) {
+                return showMessage("Please Enter a valid JSC Institute!", 'jsc_institute', theForm);
+            }
+            if (theForm.jsc_year.selectedIndex <= 0) {
+                return showMessage("Please Select JSC Passing Year!", 'jsc_year', theForm);
+            }
+        }
+
+        theForm.ssc_result_eq.value = 0;
+        if (postInfo.ssc_active == 1 && (postInfo.ssc_required == 1 || theForm.if_applicable_ssc.checked)) {
+            if (theForm.ssc_exam.selectedIndex <= 0) {
+                return showMessage("Please Select SSC Exam!", 'ssc_exam', theForm);
+            }
+            if (theForm.ssc_board.selectedIndex <= 0) {
+                return showMessage("Please Select SSC Board!", 'ssc_board', theForm);
+            }
+            if (theForm.ssc_board_other.value && !isValidEnglish(theForm.ssc_board_other.value)) {
+                return showMessage("Please Enter a SSC Board in English!", 'ssc_board_other', theForm);
+            }
+            if (!theForm.ssc_roll.value) {
+                return showMessage("Please Enter a SSC Roll No!", 'ssc_roll', theForm);
+            }
+            if (theForm.ssc_result_type.selectedIndex <= 0) {
+                return showMessage("Please Select SSC Result Type!", 'ssc_result_type', theForm);
+            }
+            if ((theForm.ssc_result_type.value == 4 || theForm.ssc_result_type.value == 5) && theForm.ssc_result.value <= 0) {
+                return showMessage("Please Enter a SSC Result!", 'ssc_result', theForm);
+            }
+            if (theForm.ssc_result_type.value == 4 && (theForm.ssc_result.value < 1 || theForm.ssc_result.value > 4)) {
+                return showMessage("Please Enter a valid SSC GPA!", 'ssc_result', theForm);
+            }
+            if (theForm.ssc_result_type.value == 5 && (theForm.ssc_result.value < 1 || theForm.ssc_result.value > 5)) {
+                return showMessage("Please Enter a valid SSC GPA!", 'ssc_result', theForm);
+            }
+            if (theForm.ssc_group.selectedIndex <= 0) {
+                return showMessage("Please Enter a SSC Group/Subject!", 'ssc_group', theForm);
+            }
+            if (theForm.ssc_group_other.value && !isValidEnglish(theForm.ssc_group_other.value)) {
+                return showMessage("Please Enter a SSC Group/Subject in English!", 'ssc_group_other', theForm);
+            }
+            if (theForm.ssc_year.selectedIndex <= 0) {
+                return showMessage("Please Select SSC Passing Year!", 'ssc_year', theForm);
+            }
+            if (theForm.jsc_year && theForm.jsc_year.selectedIndex > 0 && parseInt(theForm.jsc_year.value) >= parseInt(theForm.ssc_year.value)) {
+                return showMessage("SSC passing year must not less than or equal to JSC passing year!", 'ssc_year', theForm);
+            }
+
+            theForm.ssc_result_eq.value = theForm.ssc_result_type.value;
+            if (theForm.ssc_result_type.value == 5) {
+                if (theForm.ssc_result.value >= 3 && theForm.ssc_result.value <= 5) {
+                    theForm.ssc_result_eq.value = 1;
+                }
+                if (theForm.ssc_result.value >= 2 && theForm.ssc_result.value < 3) {
+                    theForm.ssc_result_eq.value = 2;
+                }
+                if (theForm.ssc_result.value > 0 && theForm.ssc_result.value < 2) {
+                    theForm.ssc_result_eq.value = 3;
+                }
+            } else if (theForm.ssc_result_type.value == 4) {
+                if (theForm.ssc_result.value >= 3 && theForm.ssc_result.value <= 4) {
+                    theForm.ssc_result_eq.value = 1;
+                }
+                if (theForm.ssc_result.value >= 2.25 && theForm.ssc_result.value < 3) {
+                    theForm.ssc_result_eq.value = 2;
+                }
+                if (theForm.ssc_result.value > 0 && theForm.ssc_result.value < 2.25) {
+                    theForm.ssc_result_eq.value = 3;
+                }
+            }
+        }
+
+        theForm.hsc_result_eq.value = 0;
+        if (postInfo.hsc_active == 1 && (postInfo.hsc_required == 1 || theForm.if_applicable_hsc.checked)) {
+            if (theForm.hsc_exam.selectedIndex <= 0) {
+                return showMessage("Please Select HSC Exam!", 'hsc_exam', theForm);
+            }
+            if (theForm.hsc_board.selectedIndex <= 0) {
+                return showMessage("Please Select HSC Board!", 'hsc_board', theForm);
+            }
+            if (theForm.hsc_board_other.value && !isValidEnglish(theForm.hsc_board_other.value)) {
+                return showMessage("Please Enter a HSC Board in English!", 'hsc_board_other', theForm);
+            }
+            if (!theForm.hsc_roll.value) {
+                return showMessage("Please Enter a HSC Roll No!", 'hsc_roll', theForm);
+            }
+            if (theForm.hsc_result_type.selectedIndex <= 0) {
+                return showMessage("Please Select HSC Result Type!", 'hsc_result_type', theForm);
+            }
+            if ((theForm.hsc_result_type.value == 4 || theForm.hsc_result_type.value == 5) && theForm.hsc_result.value <= 0) {
+                return showMessage("Please Enter a HSC Result!", 'hsc_result', theForm);
+            }
+            if (theForm.hsc_result_type.value == 4 && (theForm.hsc_result.value < 1 || theForm.hsc_result.value > 4)) {
+                return showMessage("Please Enter a valid HSC GPA!", 'hsc_result', theForm);
+            }
+            if (theForm.hsc_result_type.value == 5 && (theForm.hsc_result.value < 1 || theForm.hsc_result.value > 5)) {
+                return showMessage("Please Enter a valid HSC GPA!", 'hsc_result', theForm);
+            }
+            if (theForm.hsc_group.selectedIndex <= 0) {
+                return showMessage("Please Enter a HSC Group/Subject!", 'hsc_group', theForm);
+            }
+            if (theForm.hsc_group_other.value && !isValidEnglish(theForm.hsc_group_other.value)) {
+                return showMessage("Please Enter a HSC Group/Subject in English!", 'hsc_group_other', theForm);
+            }
+            if (theForm.hsc_year.selectedIndex <= 0) {
+                return showMessage("Please Select HSC Passing Year!", 'hsc_year', theForm);
+            }
+            if (theForm.jsc_year && theForm.jsc_year.selectedIndex > 0 && parseInt(theForm.jsc_year.value) >= parseInt(theForm.hsc_year.value)) {
+                return showMessage("HSC passing year must not less than or equal to JSC passing year!", 'hsc_year', theForm);
+            }
+            if (theForm.ssc_year && theForm.ssc_year.selectedIndex > 0 && parseInt(theForm.ssc_year.value) >= parseInt(theForm.hsc_year.value)) {
+                return showMessage("HSC passing year must not less than or equal to SSC passing year!", 'hsc_year', theForm);
+            }
+
+            theForm.hsc_result_eq.value = theForm.hsc_result_type.value;
+            if (theForm.hsc_result_type.value == 5) {
+                if (theForm.hsc_result.value >= 3 && theForm.hsc_result.value <= 5) {
+                    theForm.hsc_result_eq.value = 1;
+                }
+                if (theForm.hsc_result.value >= 2 && theForm.hsc_result.value < 3) {
+                    theForm.hsc_result_eq.value = 2;
+                }
+                if (theForm.hsc_result.value > 0 && theForm.hsc_result.value < 2) {
+                    theForm.hsc_result_eq.value = 3;
+                }
+            } else if (theForm.hsc_result_type.value == 4) {
+                if (theForm.hsc_result.value >= 3 && theForm.hsc_result.value <= 4) {
+                    theForm.hsc_result_eq.value = 1;
+                }
+                if (theForm.hsc_result.value >= 2.25 && theForm.hsc_result.value < 3) {
+                    theForm.hsc_result_eq.value = 2;
+                }
+                if (theForm.hsc_result.value > 0 && theForm.hsc_result.value < 2.25) {
+                    theForm.hsc_result_eq.value = 3;
+                }
+            }
+        }
+
+        theForm.gra_result_eq.value = 0;
+        if (postInfo.gra_active == 1 && (postInfo.gra_required == 1 || theForm.if_applicable_gra.checked)) {
+            if (theForm.gra_exam.selectedIndex <= 0) {
+                return showMessage("Please Select Graduation Exam!", 'gra_exam', theForm);
+            }
+            if (theForm.gra_subject.selectedIndex <= 0) {
+                return showMessage("Please Select Graduation Subject!", 'gra_subject', theForm);
+            }
+            if (theForm.gra_subject_other.value && !isValidEnglish(theForm.gra_subject_other.value)) {
+                return showMessage("Please Enter a Graduation Subject in English!", 'gra_subject_other', theForm);
+            }
+            if (theForm.gra_institute.selectedIndex <= 0) {
+                return showMessage("Please Enter a Graduation University/Institute!", 'gra_institute', theForm);
+            }
+            if (theForm.gra_institute_other.value && !isValidEnglish(theForm.gra_institute_other.value)) {
+                return showMessage("Please Enter a Graduation University/Institute name in English!", 'gra_institute_other', theForm);
+            }
+            if (theForm.gra_result_type.selectedIndex <= 0) {
+                return showMessage("Please Select Graduation Result Type!", 'gra_result_type', theForm);
+            }
+            if ((theForm.gra_result_type.value == 4 || theForm.gra_result_type.value == 5) && theForm.gra_result.value <= 0) {
+                return showMessage("Please Enter a Graduation Result!", 'gra_result', theForm);
+            }
+            if (theForm.gra_result_type.value == 4 && (theForm.gra_result.value < 1 || theForm.gra_result.value > 4)) {
+                return showMessage("Please Enter a valid Graduation CGPA!", 'gra_result', theForm);
+            }
+            if (theForm.gra_result_type.value == 5 && (theForm.gra_result.value < 1 || theForm.gra_result.value > 5)) {
+                return showMessage("Please Enter a valid Graduation CGPA!", 'gra_result', theForm);
+            }
+            if (theForm.gra_year.selectedIndex <= 0) {
+                return showMessage("Please Select Graduation Passing Year!", 'gra_year', theForm);
+            }
+            if (theForm.gra_duration.selectedIndex <= 0) {
+                return showMessage("Please Enter a Graduation Course Duration!", 'gra_duration', theForm);
+            }
+            if (theForm.jsc_year && theForm.jsc_year.selectedIndex > 0 && parseInt(theForm.jsc_year.value) >= parseInt(theForm.gra_year.value)) {
+                return showMessage("Graduation passing year must not less than or equal to JSC passing year!", 'gra_year', theForm);
+            }
+            if (theForm.ssc_year && theForm.ssc_year.selectedIndex > 0 && parseInt(theForm.ssc_year.value) >= parseInt(theForm.gra_year.value)) {
+                return showMessage("Graduation passing year must not less than or equal to SSC passing year!", 'gra_year', theForm);
+            }
+            if (theForm.hsc_year && theForm.hsc_year.selectedIndex > 0 && parseInt(theForm.hsc_year.value) >= parseInt(theForm.gra_year.value)) {
+                return showMessage("Graduation passing year must not less than or equal to HSC passing year!", 'gra_year', theForm);
+            }
+
+            theForm.gra_result_eq.value = theForm.gra_result_type.value;
+            if (theForm.gra_result_type.value == 5) {
+                if (theForm.gra_result.value >= 3.75 && theForm.gra_result.value <= 5) {
+                    theForm.gra_result_eq.value = 1;
+                }
+                if (theForm.gra_result.value >= 2.813 && theForm.gra_result.value < 3.75) {
+                    theForm.gra_result_eq.value = 2;
+                }
+                if (theForm.gra_result.value > 0 && theForm.gra_result.value < 2.813) {
+                    theForm.gra_result_eq.value = 3;
+                }
+            } else if (theForm.gra_result_type.value == 4) {
+                if (theForm.gra_result.value >= 3 && theForm.gra_result.value <= 4) {
+                    theForm.gra_result_eq.value = 1;
+                }
+                if (theForm.gra_result.value >= 2.25 && theForm.gra_result.value < 3) {
+                    theForm.gra_result_eq.value = 2;
+                }
+                if (theForm.gra_result.value > 0 && theForm.gra_result.value < 2.25) {
+                    theForm.gra_result_eq.value = 3;
+                }
+            }
+        }
+
+        theForm.mas_result_eq.value = 0;
+        if (postInfo.mas_active == 1 && (postInfo.mas_required == 1 || theForm.if_applicable_mas.checked)) {
+            if (theForm.mas_exam.selectedIndex <= 0) {
+                return showMessage("Please Select Masters Exam!", 'mas_exam', theForm);
+            }
+            if (theForm.mas_subject.selectedIndex <= 0) {
+                return showMessage("Please Select Masters Subject!", 'mas_subject', theForm);
+            }
+            if (theForm.mas_subject_other.value && !isValidEnglish(theForm.mas_subject_other.value)) {
+                return showMessage("Please Enter a Masters Subject in English!", 'mas_subject_other', theForm);
+            }
+            if (theForm.mas_institute.selectedIndex <= 0) {
+                return showMessage("Please Enter a Masters University/Institute!", 'mas_institute', theForm);
+            }
+            if (theForm.mas_institute_other.value && !isValidEnglish(theForm.mas_institute_other.value)) {
+                return showMessage("Please Enter a Masters University/Institute name in English!", 'mas_institute_other', theForm);
+            }
+            if (theForm.mas_result_type.selectedIndex <= 0) {
+                return showMessage("Please Select Masters Result Type!", 'mas_result_type', theForm);
+            }
+            if ((theForm.mas_result_type.value == 4 || theForm.mas_result_type.value == 5) && theForm.mas_result.value <= 0) {
+                return showMessage("Please Enter a Masters Result!", 'mas_result', theForm);
+            }
+            if (theForm.mas_result_type.value == 4 && (theForm.mas_result.value < 1 || theForm.mas_result.value > 4)) {
+                return showMessage("Please Enter a valid Masters CGPA!", 'mas_result', theForm);
+            }
+            if (theForm.mas_result_type.value == 5 && (theForm.mas_result.value < 1 || theForm.mas_result.value > 5)) {
+                return showMessage("Please Enter a valid Masters CGPA!", 'mas_result', theForm);
+            }
+            if (theForm.mas_year.selectedIndex <= 0) {
+                return showMessage("Please Select Masters Passing Year!", 'mas_year', theForm);
+            }
+            if (theForm.mas_duration.selectedIndex <= 0) {
+                return showMessage("Please Enter a Masters Course Duration!", 'mas_duration', theForm);
+            }
+            if (theForm.jsc_year && theForm.jsc_year.selectedIndex > 0 && parseInt(theForm.jsc_year.value) >= parseInt(theForm.mas_year.value)) {
+                return showMessage("Masters passing year must not less than or equal to JSC passing year!", 'mas_year', theForm);
+            }
+            if (theForm.ssc_year && theForm.ssc_year.selectedIndex > 0 && parseInt(theForm.ssc_year.value) >= parseInt(theForm.mas_year.value)) {
+                return showMessage("Masters passing year must not less than or equal to SSC passing year!", 'mas_year', theForm);
+            }
+            if (theForm.hsc_year && theForm.hsc_year.selectedIndex > 0 && parseInt(theForm.hsc_year.value) >= parseInt(theForm.mas_year.value)) {
+                return showMessage("Masters passing year must not less than or equal to HSC passing year!", 'mas_year', theForm);
+            }
+            if (theForm.gra_year && theForm.gra_year.selectedIndex > 0 && parseInt(theForm.gra_year.value) >= parseInt(theForm.mas_year.value)) {
+                return showMessage("Masters passing year must not less than or equal to Graduation passing year!", 'mas_year', theForm);
+            }
+
+            theForm.mas_result_eq.value = theForm.mas_result_type.value;
+            if (theForm.mas_result_type.value == 5) {
+                if (theForm.mas_result.value >= 3.75 && theForm.mas_result.value <= 5) {
+                    theForm.mas_result_eq.value = 1;
+                }
+                if (theForm.mas_result.value >= 2.813 && theForm.mas_result.value < 3.75) {
+                    theForm.mas_result_eq.value = 2;
+                }
+                if (theForm.mas_result.value > 0 && theForm.mas_result.value < 2.813) {
+                    theForm.mas_result_eq.value = 3;
+                }
+            } else if (theForm.mas_result_type.value == 4) {
+                if (theForm.mas_result.value >= 3 && theForm.mas_result.value <= 4) {
+                    theForm.mas_result_eq.value = 1;
+                }
+                if (theForm.mas_result.value >= 2.25 && theForm.mas_result.value < 3) {
+                    theForm.mas_result_eq.value = 2;
+                }
+                if (theForm.mas_result.value > 0 && theForm.mas_result.value < 2.25) {
+                    theForm.mas_result_eq.value = 3;
+                }
+            }
+        }
+
+        if (postInfo.hsc_active == 1 && (postInfo.hsc_required == 1 || theForm.if_applicable_hsc.checked)) {
+            if (postInfo.ssc_active != 1 || (postInfo.ssc_required != 1 && !theForm.if_applicable_ssc.checked)) {
+                return showMessage("Please enter the SSC/Equivalent info!", 'ssc_exam', theForm);
+            }
+        }
+        if (postInfo.gra_active == 1 && (postInfo.gra_required == 1 || theForm.if_applicable_gra.checked)) {
+            if (postInfo.ssc_active != 1 || (postInfo.ssc_required != 1 && !theForm.if_applicable_ssc.checked)) {
+                return showMessage("Please enter the SSC/Equivalent info!", 'ssc_exam', theForm);
+            }
+            if (postInfo.hsc_active != 1 || (postInfo.hsc_required != 1 && !theForm.if_applicable_hsc.checked)) {
+                return showMessage("Please enter the HSC/Equivalent info!", 'hsc_exam', theForm);
+            }
+        }
+        if (postInfo.mas_active == 1 && (postInfo.mas_required == 1 || theForm.if_applicable_mas.checked)) {
+            if (postInfo.ssc_active != 1 || (postInfo.ssc_required != 1 && !theForm.if_applicable_ssc.checked)) {
+                return showMessage("Please enter the SSC/Equivalent info!", 'ssc_exam', theForm);
+            }
+            if (postInfo.hsc_active != 1 || (postInfo.hsc_required != 1 && !theForm.if_applicable_hsc.checked)) {
+                return showMessage("Please enter the HSC/Equivalent info!", 'hsc_exam', theForm);
+            }
+            if (postInfo.gra_active != 1 || (postInfo.gra_required != 1 && !theForm.if_applicable_gra.checked)) {
+                return showMessage("Please enter the Graduation/Equivalent info!", 'gra_exam', theForm);
+            }
+        }
+
+
+        var totalExpYear = 0;
+        var totalExpMonth = 0;
+        var totalExpDay = 0;
+        if (postInfo.job_exp_active == 1 && (postInfo.job_exp_required == 1 || theForm.if_applicable_exp.checked)) {
+            var flag = false;
+            $('.jobExpTemplate').each(function (index) {
+                var parentElm = document.querySelector("#expSection .jobExpTemplate:nth-child(" + ++index + ")");
+                var elm = $(this);
+                if (!elm.find('.employment_type').val() > 0) {
+                    flag = true;
+                    return showMessageExp("Please Select Employment Type!", 'employment_type', parentElm);
+                }
+                if (!elm.find('.organization').val() || !isValidEnglish(elm.find('.organization').val())) {
+                    flag = true;
+                    return showMessageExp("Please Enter valid Organization Name!", 'organization', parentElm);
+                }
+                if (!elm.find('.designation').val() || !isValidEnglish(elm.find('.designation').val())) {
+                    flag = true;
+                    return showMessageExp("Please Enter valid Designation!", 'designation', parentElm);
+                }
+                if (!elm.find('.office_address').val() || !isValidEnglish(elm.find('.office_address').val())) {
+                    flag = true;
+                    return showMessageExp("Please Enter valid Office Address!", 'office_address', parentElm);
+                }
+                if (!elm.find('.job_start_date').val() || !moment(elm.find('.job_start_date').val()).isValid()) {
+                    flag = true;
+                    return showMessageExp("Please Enter Job Start Date!", 'job_start_date', parentElm);
+                }
+                if (elm.find('.currently_working') && elm.find('.currently_working').prop('checked')) {
+                    elm.find('.job_end_date').val(today);
+                    elm.find('.currently_working').val(1);
+                } else if (!elm.find('.job_end_date').val() || !moment(elm.find('.job_end_date').val()).isValid()) {
+                    flag = true;
+                    return showMessageExp("Please Enter Job End Date!", 'job_end_date', parentElm);
+                } else if (elm.find('.currently_working') && !elm.find('.currently_working').prop('checked')) {
+                    elm.find('.currently_working').val(0);
+                }
+
+                /*
+                var start_new = moment(elm.find('.job_start_date').val()).format('YYYY-MM-DD');
+                elm.find('.job_start_date').val(start_new);
+
+                var end_new = moment(elm.find('.job_end_date').val()).format('YYYY-MM-DD');
+                elm.find('.job_end_date').val(end_new);
+                */
+
+                // if (!elm.find('.last_salary').val()) {
+                //     flag = true;
+                //     return showMessageExp("Please Enter Last Drawn Salary!", 'last_salary', parentElm);
+                // }
+                if (!elm.find('.job_description').val() || !isValidEnglish(elm.find('.job_description').val())) {
+                    flag = true;
+                    return showMessageExp("Please Enter valid Job Description!", 'job_description', parentElm);
+                }
+
+                var job_start_date = elm.find('.job_start_date').val();
+                var job_end_date = (elm.find('.currently_working') && elm.find('.currently_working').prop('checked')) ? today : elm.find('.job_end_date').val();
+
+                if (!moment(job_start_date).isValid()) {
+                    flag = true;
+                    return showMessage("Please enter a valid start date!", 'job_start_date', theForm);
+                }
+                if (!moment(job_end_date).isValid()) {
+                    flag = true;
+                    return showMessage("Please enter a valid end date!", 'job_end_date', theForm);
+                }
+
+                var years = 0;
+                var months = 0;
+                var days = 0;
+
+                var startDate = new Date(job_start_date);
+                var endDate = new Date(job_end_date);
+
+                if (startDate > endDate) {
+                    flag = true;
+                    return showMessage("Job end date must not less than job start date!", 'job_end_date', theForm);
+                }
+
+                var startYear = startDate.getFullYear();
+                var startMonth = startDate.getMonth();// + 1;
+                var startDay = startDate.getDate();
+
+                var endYear = endDate.getFullYear();
+                var endMonth = endDate.getMonth();// + 1;
+                var endDay = endDate.getDate();
+
+                var start = moment([startYear, startMonth, startDay]);
+                var end = moment([endYear, endMonth, endDay]);
+
+                years = end.diff(start, 'year');
+                start.add(years, 'years');
+                months = end.diff(start, 'months');
+                start.add(months, 'months');
+                days = end.diff(start, 'days');
+
+
+                if (theForm.jsc_year && theForm.jsc_year.selectedIndex > 0 && parseInt(theForm.jsc_year.value) > startYear) {
+                    flag = true;
+                    return showMessage("Job start year must not less than JSC passing year!", 'job_start_date', theForm);
+                }
+                if (theForm.ssc_year && theForm.ssc_year.selectedIndex > 0 && parseInt(theForm.ssc_year.value) > startYear) {
+                    flag = true;
+                    return showMessage("Job start year must not less than SSC passing year!", 'job_start_date', theForm);
+                }
+                if (theForm.hsc_year && theForm.hsc_year.selectedIndex > 0 && parseInt(theForm.hsc_year.value) > startYear) {
+                    flag = true;
+                    return showMessage("Job start year must not less than HSC passing year!", 'job_start_date', theForm);
+                }
+                if (theForm.gra_year && theForm.gra_year.selectedIndex > 0 && parseInt(theForm.gra_year.value) > startYear) {
+                    flag = true;
+                    return showMessage("Job start year must not less than Graduation passing year!", 'job_start_date', theForm);
+                }
+
+
+                if (months >= 12 || days >= 30) {
+                    var days1 = days % 30;
+                    months += Math.floor(days / 30);
+                    var mon1 = months % 12;
+                    years += Math.floor(months / 12);
+                    days = days1;
+                    months = mon1;
+                }
+                elm.find('.total_experience').val(years + ' Year(s) ' + months + ' Month(s) ' + days + ' Day(s)');
+
+                totalExpYear += years;
+                totalExpMonth += months;
+                totalExpDay += days;
+            });
+            if (flag) {
+                return false;
+            }
+            if (totalExpMonth >= 12 || totalExpDay >= 30) {
+                var days = totalExpDay % 30;
+                totalExpMonth += Math.floor(totalExpDay / 30);
+                var mon = totalExpMonth % 12;
+                totalExpYear += Math.floor(totalExpMonth / 12);
+                totalExpDay = days;
+                totalExpMonth = mon;
+            }
+        }
+        theForm.total_job_exp.value = totalExpYear;          //Total Year count
+        theForm.total_job_exp_month.value = totalExpMonth;   //Fraction month count after year
+        theForm.total_job_exp_day.value = totalExpDay;       //Fraction day count after month and year
+
+        var flag = false;
+        $('.other_exp').each(function (index) {
+            var parentElm = document.querySelector("#otherExpSection .other_exp:nth-child(" + ++index + ")");
+            var elm = $(this);
+            if (elm.find('.exp_value').val() != 0 && elm.find('.exp_value').val() != 1) {
+                flag = true;
+                return showMessageExp("Please Select Other Experience Value!", 'exp_value', parentElm);
+            }
+            var expItem = otherExpList.find(ex => ex.id == $(this).attr('id'));
+            if (expItem && expItem.is_required == 1 && elm.find('.exp_value').val() != 1) {
+                flag = true;
+                return showMessageExp("This experience is mandatory!", 'exp_value', parentElm);
+            }
+            if (elm.find('.exp_value').val() > 0 && elm.find('.text_value').length && elm.find('.text_value').val() && !isValidEnglish(elm.find('.text_value').val())) {
+                flag = true;
+                return showMessageExp("Please enter valid experience text Value!", 'text_value', parentElm);
+            }
+        });
+        if (flag) {
+            return false;
+        }
+
+        return validateEduConditions(theForm) && validateExpConditions(theForm);
+
+    } catch (ex) {
+        console.log(ex)
+        alert('Validation Error!!');
+        return false;
+    }
+}
+
+function validateEduConditions(theForm) {
+    if (postEdu.ssc_min_result_eq > 0 && (theForm.ssc_result_eq.value <= 0 || parseInt(theForm.ssc_result_eq.value) > parseInt(postEdu.ssc_min_result_eq))) {
+        return showMessage("Your SSC result is less than the required!", 'ssc_result', theForm);
+    }
+    if (postEdu.hsc_min_result_eq > 0 && (theForm.hsc_result_eq.value <= 0 || parseInt(theForm.hsc_result_eq.value) > parseInt(postEdu.hsc_min_result_eq))) {
+        return showMessage("Your HSC result is less than the required!", 'hsc_result', theForm);
+    }
+    if (postEdu.gra_min_result_eq > 0 && (theForm.gra_result_eq.value <= 0 || parseInt(theForm.gra_result_eq.value) > parseInt(postEdu.gra_min_result_eq))) {
+        return showMessage("Your Graduation result is less than the required!", 'gra_result', theForm);
+    }
+    if (postEdu.mas_min_result_eq > 0 && (theForm.mas_result_eq.value <= 0 || parseInt(theForm.mas_result_eq.value) > parseInt(postEdu.mas_min_result_eq))) {
+        return showMessage("Your Masters result is less than the required!", 'mas_result', theForm);
+    }
+
+    //ADD CUSTOM EDU CONDITIONS HERE START
+
+
+
+    //ADD CUSTOM EDU CONDITIONS HERE END
+
+
+    return true;
+}
+
+function validateExpConditions(theForm) {
+    if (parseInt(theForm.total_job_exp.value) < parseInt(postInfo.min_job_exp_year)) {
+        return showMessage("Minimun " + postInfo.min_job_exp_year + " year(s) of job experience required! You have " + theForm.total_job_exp.value + " year(s)", 'job_start_date', theForm);
+    }
+
+    //ADD CUSTOM EXP CONDITIONS HERE START
+    // theForm.total_job_exp_month.value
+
+
+    //ADD CUSTOM EXP CONDITIONS HERE END
+
+
+    return true;
+}

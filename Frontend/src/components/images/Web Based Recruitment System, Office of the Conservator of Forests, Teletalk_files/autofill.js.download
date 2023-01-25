@@ -1,0 +1,265 @@
+var autoFill = new function () {
+    var that = this;
+    this.setData = function (alljobs_info, alljobs_id) {
+        $('#sscSection .verified_overlay,#sscSection .verified_icon').hide();
+        $('#hscSection .verified_overlay,#hscSection .verified_icon').hide();
+        if (alljobs_id && !alljobs_info.data) {
+            $('#alljobs_id').val('');
+            setTimeout(() => {
+                if (alljobs_info.message) {
+                    alert(alljobs_info.message);
+                    return;
+                } else {
+                    alert('Premium member with id: ' + alljobs_id + ' not found!');
+                    return;
+                }
+            }, 200);
+        } else {
+            // autoFill.setData(alljobs_info);
+            if (alljobs_info && alljobs_info.files.image) {
+                $("#photo_view").show();
+                $(".short-width").addClass('show');
+            } else {
+                $("#photo_view").hide();
+                $(".short-width").removeClass('show');
+            }
+        }
+        if (!(alljobs_info && alljobs_info.data)) {
+            return;
+        }
+
+        var theForm = document.getElementById('applicationForm');
+
+        var student = alljobs_info.data;
+        if (student.jobseeker_info.length) {
+            var basicInfo = student.jobseeker_info[0];
+
+            if (basicInfo.ssc_is_verified) {
+                $('#sscSection .verified_overlay,#sscSection .verified_icon').show();
+                $('#sscSection').find('input,select').attr('tabIndex', -1);
+            } else {
+                $('#sscSection .verified_overlay,#sscSection .verified_icon').hide();
+            }
+            if (basicInfo.hsc_is_verified) {
+                $('#hscSection .verified_overlay,#hscSection .verified_icon').show();
+                $('#hscSection').find('input,select').attr('tabIndex', -1);
+            } else {
+                $('#hscSection .verified_overlay,#hscSection .verified_icon').hide();
+            }
+
+
+            $("#photo_view").attr("src", 'data:image/jpg;base64,' + alljobs_info.files.image).show();
+            $("#signature_view").attr("src", 'data:image/jpg;base64,' + alljobs_info.files.signature).show();
+
+            if (student.jobseeker_user.length) {
+                $('#alljobs_id').text(student.jobseeker_user[0].userid);
+                $('#applicationForm').prepend('<input type="hidden" name="alljobs_id" value="' + student.jobseeker_user[0].userid + '">');
+            }
+            $('#applicationForm').prepend('<input type="hidden" name="imageurl" value="' + basicInfo.image + '">');
+            $('#applicationForm').prepend('<input type="hidden" name="signatureurl" value="' + basicInfo.signature + '">');
+
+            $('#applicationForm').prepend('<input type="hidden" name="image" value="' + alljobs_info.files.image + '">');
+            $('#applicationForm').prepend('<input type="hidden" name="signature" value="' + alljobs_info.files.signature + '">');
+
+            $('#applicationForm').prepend('<input type="hidden" name="ssc_verified" value="' + (basicInfo.ssc_is_verified ? 1 : 0) + '">');
+            $('#applicationForm').prepend('<input type="hidden" name="hsc_verified" value="' + (basicInfo.hsc_is_verified ? 1 : 0) + '">');
+
+
+            $('#name').val(basicInfo.name_en && basicInfo.name_en.toUpperCase());
+            $('#name_bn').val(basicInfo.name_bn && basicInfo.name_bn);
+            $('#father').val(basicInfo.father_name && basicInfo.father_name.toUpperCase());
+            $('#father_bn').val(basicInfo.father_name_bn && basicInfo.father_name_bn);
+            $('#mother').val(basicInfo.mother_name && basicInfo.mother_name.toUpperCase());
+            $('#mother_bn').val(basicInfo.mother_name_bn && basicInfo.mother_name_bn);
+            document.getElementById("dob").valueAsDate = new Date(basicInfo.dob);
+            this.selectValue($("#religion option"), basicInfo.religion);
+
+            $('#gender').val(basicInfo.gender);
+
+            if (basicInfo.nid_no) {
+                $('#nid').val(1).change();
+                $('#nid_no').val(basicInfo.nid_no);
+            } else {
+                $('#nid').val(0);
+            }
+
+            if (basicInfo.birth_certificate_no) {
+                $('#breg').val(1).change();
+                $('#breg_no').val(basicInfo.birth_certificate_no);
+            } else {
+                $('#breg').val(0);
+            }
+
+            if (basicInfo.passport_no) {
+                $('#passport').val(1).change();
+                $('#passport_no').val(basicInfo.passport_no);
+            } else {
+                $('#passport').val(0);
+            }
+
+            if (basicInfo.marital_status == 'Married') {
+                $('#marital_status').val(1).change();
+                $('#spouse_name').val(basicInfo.spouse_name);
+            } else {
+                $('#marital_status').val(0);
+            }
+
+            if (document.getElementById("quota")) {
+                this.selectValue($("#quota option"), basicInfo.quota);
+                document.getElementById("quota").onchange();
+            }
+            $('#mobile').val(basicInfo.mobile_phone);
+            $('#confirm_mobile').val(basicInfo.mobile_phone);
+            $('#email').val(student.jobseeker_user.length && student.jobseeker_user[0].email);
+
+            $('#present_careof').val(basicInfo.present_care_of);
+            $('#present_village').val(basicInfo.present_address);
+            this.selectValue($("#present_district option"), basicInfo.present_district);
+            document.getElementById("present_district").onchange();
+            this.selectValue($("#present_upazila option"), basicInfo.present_thana);
+            $('#present_post').val(basicInfo.present_post_office);
+            $('#present_postcode').val(basicInfo.present_post_code);
+
+            if (!basicInfo.same_as_present_address) {
+                $('#permanent_careof').val(basicInfo.permanent_care_of);
+                $('#permanent_village').val(basicInfo.permanent_address);
+                this.selectValue($("#permanent_district option"), basicInfo.permanent_district);
+                document.getElementById("permanent_district").onchange();
+                this.selectValue($("#permanent_upazila option"), basicInfo.permanent_thana);
+                $('#permanent_post').val(basicInfo.permanent_post_office);
+                $('#permanent_postcode').val(basicInfo.permanent_post_code);
+            } else {
+                $("#same_as_present").prop("checked", true);
+                $("#same_as_present").attr('checked', 'checked');
+                document.getElementById("same_as_present").onclick();
+                document.getElementById("permanent_district").onchange();
+                document.getElementById("same_as_present").onclick();
+            }
+        }
+
+        if (student.jobseeker_edu.length) {
+            var eduInfo = student.jobseeker_edu[0];
+            if ($('#if_applicable_ssc').length && (eduInfo.ssc_exam || eduInfo.ssc_board || eduInfo.ssc_result_type || eduInfo.ssc_result)) {
+                $('#if_applicable_ssc').trigger('click');
+            }
+            if (postInfo.ssc_active == 1 && (postInfo.ssc_required == 1 || theForm.if_applicable_ssc.checked)) {
+                this.selectValue($("#ssc_exam option"), eduInfo.ssc_exam);
+                document.getElementById("ssc_exam").onchange();
+                this.selectValue($("#ssc_board option"), eduInfo.ssc_board);
+                document.getElementById("ssc_board").onchange();
+                $('#ssc_roll').val(eduInfo.ssc_roll);
+                this.selectValue($("#ssc_result_type option"), eduInfo.ssc_result_type);
+                document.getElementById("ssc_result_type").onchange();
+                $('#ssc_result').val(eduInfo.ssc_result);
+                this.selectValue($("#ssc_year option"), eduInfo.ssc_year);
+                this.selectValue($("#ssc_group option"), eduInfo.ssc_subject);
+                document.getElementById("ssc_group").onchange();
+            }
+
+            if ($('#if_applicable_hsc').length && (eduInfo.hsc_exam || eduInfo.hsc_board || eduInfo.hsc_result_type || eduInfo.hsc_result)) {
+                $('#if_applicable_hsc').trigger('click');
+            }
+            if (postInfo.hsc_active == 1 && (postInfo.hsc_required == 1 || theForm.if_applicable_hsc.checked)) {
+                this.selectValue($("#hsc_exam option"), eduInfo.hsc_exam);
+                document.getElementById("hsc_exam").onchange();
+                this.selectValue($("#hsc_board option"), eduInfo.hsc_board);
+                document.getElementById("hsc_board").onchange();
+                $('#hsc_roll').val(eduInfo.hsc_roll);
+                this.selectValue($("#hsc_result_type option"), eduInfo.hsc_result_type);
+                document.getElementById("hsc_result_type").onchange();
+                $('#hsc_result').val(eduInfo.hsc_result);
+                this.selectValue($("#hsc_year option"), eduInfo.hsc_year);
+                this.selectValue($("#hsc_group option"), eduInfo.hsc_subject);
+                document.getElementById("hsc_group").onchange();
+            }
+
+            if ($('#if_applicable_gra').length && (eduInfo.gra_exam || eduInfo.gra_institute || eduInfo.gra_result_type || eduInfo.gra_result)) {
+                $('#if_applicable_gra').trigger('click');
+            }
+            if (postInfo.gra_active == 1 && (postInfo.gra_required == 1 || theForm.if_applicable_gra.checked)) {
+                this.selectValue($("#gra_exam option"), eduInfo.gra_exam);
+                document.getElementById("gra_exam").onchange();
+                this.selectValue($("#gra_institute option"), eduInfo.gra_institute);
+                document.getElementById("gra_institute").onchange();
+                this.selectValue($("#gra_result_type option"), eduInfo.gra_result_type);
+                document.getElementById("gra_result_type").onchange();
+                $('#gra_result').val(eduInfo.gra_result);
+                this.selectValue($("#gra_year option"), eduInfo.gra_year);
+                this.selectValue($("#gra_duration option"), eduInfo.gra_duration);
+                this.selectValue($("#gra_subject option"), eduInfo.gra_subject);
+                document.getElementById("gra_subject").onchange();
+            }
+
+            if ($('#if_applicable_mas').length && (eduInfo.mas_exam || eduInfo.mas_institute || eduInfo.mas_result_type || eduInfo.mas_result)) {
+                $('#if_applicable_mas').trigger('click');
+            }
+            if (postInfo.mas_active == 1 && (postInfo.mas_required == 1 || theForm.if_applicable_mas.checked)) {
+                this.selectValue($("#mas_exam option"), eduInfo.mas_exam);
+                this.selectValue($("#mas_institute option"), eduInfo.mas_institute);
+                document.getElementById("mas_institute").onchange();
+                this.selectValue($("#mas_result_type option"), eduInfo.mas_result_type);
+                document.getElementById("mas_result_type").onchange();
+                $('#mas_result').val(eduInfo.mas_result);
+                this.selectValue($("#mas_year option"), eduInfo.mas_year);
+                this.selectValue($("#mas_duration option"), eduInfo.mas_duration);
+                this.selectValue($("#mas_subject option"), eduInfo.mas_subject);
+                document.getElementById("mas_subject").onchange();
+            }
+        }
+
+        var expCnt = student.jobseeker_experience.length;
+        if (postInfo.job_exp_active == 1 && expCnt) {
+            if (postInfo.job_exp_required == 0) {
+                $("#if_applicable_exp").prop("checked", true);
+                $("#if_applicable_exp").attr('checked', 'checked');
+                document.getElementById("if_applicable_exp").onclick();
+            }
+
+            if (postInfo.job_exp_active == 1 && (postInfo.job_exp_required == 1 || theForm.if_applicable_exp.checked)) {
+                if (expCnt > 1) {
+                    for (var i = 1; i < expCnt; i++) {
+                        document.getElementById("addNewJob").onclick();
+                    }
+                    var currJobList = student.jobseeker_experience.filter(ex => ex.is_running);
+                    if (currJobList.length) {
+                        for (let item of currJobList) {
+                            item.ending_date = today;
+                        }
+                    }
+                    student.jobseeker_experience.sort(function (a, b) {
+                        return new Date(b.ending_date) - new Date(a.ending_date);
+                    });
+                }
+            }
+
+            $('#expSection .jobExpTemplate').each(function (index) {
+                that.setExpData($(this), student.jobseeker_experience[index]);
+            });
+        }
+    };
+    this.setExpData = function (jobWraper, data) {
+        jobWraper.find('.employment_type').val();
+        jobWraper.find('.organization').val(data.company_name);
+        jobWraper.find('.designation').val(data.exp_title);
+        jobWraper.find('.office_address').val();
+        jobWraper.find('.job_start_date').val(data.starting_date);
+        jobWraper.find('.last_salary').val();
+        jobWraper.find('.job_description').val(data.exp_description.slice(0, 300));
+        onKeyupJobDesc(jobWraper.find('.job_description')[0]);
+        if (data.is_running) {
+            $("#currently_working").prop("checked", true);
+            $("#currently_working").attr('checked', 'checked');
+            document.getElementById("currently_working").onclick();
+        } else {
+            jobWraper.find('.job_end_date').val(data.ending_date);
+        }
+    };
+    this.selectValue = function (elm, value) {
+        if (!value) {
+            return;
+        }
+        elm.filter(function () {
+            return $(this).text() && value && $(this).text().toString().trim().toUpperCase() == value.toString().trim().toUpperCase();
+        }).prop('selected', true);
+    };
+};

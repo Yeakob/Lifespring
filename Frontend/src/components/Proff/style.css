@@ -1,0 +1,35 @@
+.animation
+{
+   animation-name: animff;
+   animation-timing-function: ease-in;
+   animation-iteration-count: 1;
+   animation-duration: 1s;
+ 
+}
+@keyframes animff {
+  0%
+  {
+    width: 17.5rem;
+    height: auto;
+    opacity: 0;
+  }
+  100%
+  {
+    width: 18rem;
+    height: auto;
+    opacity: 1;
+  }
+   
+    
+}
+.ss
+{
+  position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 1263.2px, 0px);
+
+}
+
+@media (max-width : 1024px) {
+  .bigScreen{
+    display: none;
+  } 
+}

@@ -1,0 +1,6 @@
+.slick-prev:before,
+.slick-next:before {
+  background-color: white;
+  border-radius: 60%;
+  font-size: 25px;
+}

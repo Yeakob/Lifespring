@@ -1,0 +1,34 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;700&display=swap");
+
+
+
+
+#sidenav-open {
+  --easeOutExpo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration: 0.6s;
+  display: grid;
+  grid-template-columns: [nav] 1fr [escape] 2fr;
+}
+
+.grid-cols-auto-1fr-auto {
+  grid-template-columns: auto 1fr auto;
+}
+
+#profile-progress {
+  border: 1em solid white;
+  border-right-color: #4a00e0;
+  border-top-color: #4a00e0;
+  border-bottom-color: #4a00e0;
+  animation: thickening 1s 0.5s linear normal;
+  border-left-color: white;
+  border-radius: 50%;
+}
+
+@keyframes thickening {
+  from {
+    border-width: 0.2em;
+  }
+  to {
+    border-width: 1em;
+  }
+}

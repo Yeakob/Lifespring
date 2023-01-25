@@ -1,0 +1,20 @@
+.hpContentSlide .slick-prev:before,
+.hpContentSlide .slick-next:before {
+  background-color: black;
+  border-radius: 60%;
+  font-size: 25px;
+}
+
+.prof-cat {
+  background: rgba(23, 184, 193, .15);
+  color: #029487;
+  text-shadow: 1px 1px 0 white;
+  display: inline-block;
+  font-size: 12px;
+  margin: 8px 0px;
+  line-height: 18px;
+  border-radius: 2px;
+  padding: 2px 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+}

@@ -1,0 +1,133 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.bder
+{
+    border-right: 1px solid rgb(185, 164, 164);
+}
+.trns
+{
+    transition-duration: .5s;
+    transform-origin: top;
+}
+.ttext
+{
+    font-size: 13.5px;
+    line-height: 18px;
+}
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+.sty
+{
+    
+    transition-duration: 1s;
+    transform-origin: left;
+    animation-name: anim;
+    animation-duration: .4s;
+    animation-timing-function:ease-in;
+    animation-iteration-count: 1;
+    margin-top: -7px;
+    text-align: left;
+    border-bottom: none;
+    
+
+}
+@keyframes anim {
+    0%
+    {
+        margin-top: 7px;
+    }
+    100%
+    {
+        margin-top: -7px;
+    }
+    
+}
+
+@keyframes navDropAnim {
+    0%
+    {
+        margin-top: -70px;
+    }
+    100%
+    {
+        margin-top: 0px;
+    }
+    
+}
+
+.navDropFromUpAnim{
+    animation-name: navDropAnim;
+    animation-duration: 1.5s;
+}
+
+.trans
+{
+  transition-duration: 2s;
+  height: auto;
+}
+.dropdown:hover .ub
+{
+
+ height: 2.5px;
+ background-color:blue;
+ animation-name: anim2;
+ animation-duration: 1s;
+ animation-iteration-count: 1;
+ animation-timing-function: cubic-bezier(0.23, 1, 0.320, 1);
+ border-radius: 10px;
+}
+.btn:hover .ub1
+{
+
+ height: 2.5px;
+ background-color:blue;
+ animation-name: anim2;
+ animation-duration: 1s;
+ animation-iteration-count: 1;
+ animation-timing-function: cubic-bezier(0.23, 1, 0.320, 1);
+ border-radius: 10px;
+    
+}
+@keyframes anim {
+    0%
+    {
+        margin-top: 7px;
+    }
+    100%
+    {
+        margin-top: -7px;
+    }
+    
+}
+@keyframes anim2 {
+    0%
+    {
+        width:0px;
+    }
+    100%
+    {
+        width: 100%;
+    }
+    
+    
+}
+.nav 
+{
+    width: 100vw;
+    height: 5rem;
+    background-color: transparent;
+    margin-left: -17px;
+}
+.navbg
+{
+    width: 100vw;
+    height: 5rem;
+    background-color: rgb(152, 164, 175);
+    margin-left: -17px;
+    padding-top: 1px;
+}
+

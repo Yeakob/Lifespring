@@ -1,0 +1,203 @@
+.swiper-button-next { 
+    color: green;
+    font-weight: 100;
+    background-color:white;
+    z-index: 1;
+    padding: 20px;
+    /*margin-right: -30px;*/
+    border-radius: 50%;
+ }
+ .swiper-button-prev{
+    color: green;
+    content: '';
+    background-color: white;
+    padding: 20px;
+    margin-left: -20px;
+    border-radius: 50%;
+    z-index: 2;
+ }
+
+ .mySwiper{
+    z-index: 1;
+ }
+ *
+ {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+ .pop_Up
+ {
+     background-color: rgb(202, 211, 203);
+     height: 30rem;
+     width: 25rem;
+     position:fixed;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%,-50%);
+     z-index: 100;
+     transition: 2s;
+     border-radius: 5px;
+     animation-name: anim1;
+     animation-timing-function: ease-in;
+     animation-duration: .5s;
+     animation-iteration-count: 1;
+ }
+ @keyframes anim1 {
+   0%
+   {
+     top: 0%;
+   }
+   100%
+   {
+     top: 50%;
+   }
+
+ }
+ @keyframes anim34 {
+   0%
+   {
+    opacity: 0;
+   }
+   100%
+   {
+     opacity: 1;
+   }
+   
+ }
+ .button
+ {
+   position: absolute;
+   font-weight: bolder;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 5px;
+   padding-bottom: 9px;
+   right: 5%;
+   top: 2%;
+   text-align: center;
+   height: 30px;
+   font-size: 30px;
+   color: white;
+   background-color: rgb(70, 152, 50);
+   border-radius: 5px;
+ }
+ .top
+ {
+   opacity: 1;
+   text-shadow: .5px .5px 1px black;
+   padding-top: 30px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   font-size: 30px;
+   text-align: center;
+   font-family: 'Courier New', Courier, monospace;
+   line-height: 2rem;
+   font-weight: 500;
+   color: green;
+   animation-name: anim34;
+   animation-timing-function: ease-in;
+   animation-duration: 2s;
+   animation-iteration-count: 1;
+   animation-delay: 0s;
+ }
+ .img
+ {
+   height: 15rem;
+ }
+ .form{
+   width: 25rem;
+   height: 9.5rem;
+   background-color: green;
+   border-bottom-left-radius: 5px;
+   border-bottom-right-radius: 5px;
+   display: flex;
+   flex-direction: column;
+   flex-wrap: wrap;
+   justify-content: center;
+   align-items: center;
+ }
+ .elem
+ {
+   width: fit-content;
+   height: auto;
+   margin: 3px;
+ }
+ .first
+ {
+   animation-name: anim33;
+   animation-timing-function: ease-in;
+   animation-duration: 1.5s;
+   animation-iteration-count: 1;
+   animation-delay: 0s;
+   text-shadow: 1px 1px 1px black;
+   font-size: 20px;
+   font-weight: 600;
+   color: rgb(254, 252, 252);
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ }
+ @keyframes anim33 {
+   0%
+   {
+     transform: translateX(-100%);
+     opacity: 0;
+   }
+   100%
+   {
+     transform: translateX(0%);
+     opacity: 1;
+   }
+ }
+ @keyframes anim35 {
+   0%
+   {
+     transform: rotateX(90deg);
+     opacity: 0;
+   }
+   100%
+   {
+     transform: rotateX(0deg);
+     opacity: 1;
+   }
+ }
+ .last
+ {
+   font-size: 14px;
+   color: rgb(172, 200, 200);
+ }
+ .b1 
+ {
+   background-color: rgba(255, 255, 255, 0.859);
+   padding: 5px;
+   padding-left: 100px;
+   padding-right: 100px;
+   border-radius: 5px;
+   font-family: 'Courier New', Courier, monospace;
+   font-weight: 600;
+   animation-name: anim35;
+   animation-timing-function: ease-in;
+   animation-duration: 2s;
+   animation-iteration-count: 1;
+   animation-delay: 0s;
+ }
+ .b2
+ {
+   background-color: rgba(92, 233, 228, 0.859);
+   padding: 5px;
+   padding-left: 80px;
+   padding-right: 80px;
+   border-radius: 5px;
+   font-family: 'Courier New', Courier, monospace;
+   font-weight: 600;
+   color: white;
+   text-shadow: .5px .5px .5px black;
+   animation-name: anim35;
+   animation-timing-function: ease-in;
+   animation-duration: 2s;
+   animation-iteration-count: 1;
+   animation-delay: 0s;
+   animation-play-state: running;
+ }

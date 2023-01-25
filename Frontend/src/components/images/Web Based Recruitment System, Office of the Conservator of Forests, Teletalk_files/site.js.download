@@ -1,0 +1,357 @@
+function onChangeId(elm, id) {
+    var val = parseInt($(elm).val());
+    if (val) {
+        document.getElementById(id).classList.remove("hide");
+    } else {
+        document.getElementById(id).classList.add("hide");
+    }
+}
+
+function onChangeIdExp(elm) {
+    var val = parseInt($(elm).val());
+    var isRequired = $(elm).attr('required');
+    if (val) {
+        $(elm).closest('.form-group').find('.valueElm').removeClass("hide");
+
+        if (isRequired) {
+            $(elm).closest('.form-group').find('.valueElm input.text_value').attr('required', true);
+        }
+    } else {
+        $(elm).closest('.form-group').find('.valueElm').addClass("hide");
+
+        if (isRequired) {
+            $(elm).closest('.form-group').find('.valueElm input.text_value').attr('required', false);
+        }
+    }
+}
+
+function onChangeQuota(elm) {
+    distElm = $('#permanent_district');
+    distElm.empty().append('<option value selected disabled>Select</option>');
+    var items = districtList;
+
+    var allowedItems = [];
+    if ((elm.value != 4 && elm.value != 5) && (postInfo.allowed_dist_list || postInfo.disallowed_dist_list)) {
+        var allowed = [];
+        var disallowed = [];
+        if (postInfo.allowed_dist_list) {
+            allowed = postInfo.allowed_dist_list.split(',');
+        }
+        if (postInfo.disallowed_dist_list) {
+            disallowed = postInfo.disallowed_dist_list.split(',');
+        }
+
+        for (let item of items) {
+            var allow = allowed.filter(ex => parseInt(ex) == parseInt(item.dist_code));
+            var disallow = disallowed.filter(ex => parseInt(ex) == parseInt(item.dist_code));
+
+            if (allowed.length && disallowed.length) {
+                if (allow.length && !disallow.length) {
+                    allowedItems.push(item);
+                }
+            } else if (allowed.length) {
+                if (allow.length) {
+                    allowedItems.push(item);
+                }
+            } else if (disallowed.length) {
+                if (!disallow.length) {
+                    allowedItems.push(item);
+                }
+            }
+        }
+    } else {
+        //allowedItems = items; //for all dist for orphan & phy.handi
+       allowedItems = items.filter(ex => ex.div_name == 'Chattogram'); //for Chattogram dist for orphan & phy.handi
+
+
+    }
+    $.each(allowedItems, function (i, ex) {
+        $('<option value="' + ex.dist_code + '">' + ex.dist_name + '</option>').appendTo(distElm);
+    });
+    document.getElementById("permanent_district").onchange();
+}
+
+function onChangeDistrict(elm, upzElm) {
+    if (upzElm == 'present_upazila') {
+        var isSame = $("#same_as_present").prop('checked');
+        if (isSame) {
+            $("#permanent_district").val(null);
+            $("#permanent_district").change();
+            $("#same_as_present").click();
+        }
+    }
+    upzElm = $('#' + upzElm);
+    upzElm.empty().append('<option value selected disabled>Select</option>');
+
+    var items = upazilaThanaList.filter(ex => ex.dist_code == elm.value);
+    var allowedItems = [];
+
+    if ($(upzElm).attr('id') == 'permanent_upazila' && (postInfo.allowed_upazila_list || postInfo.disallowed_upazila_list)) {
+        var allowed = [];
+        var disallowed = [];
+        if (postInfo.allowed_upazila_list) {
+            allowed = postInfo.allowed_upazila_list.split(',');
+        }
+        if (postInfo.disallowed_upazila_list) {
+            disallowed = postInfo.disallowed_upazila_list.split(',');
+        }
+
+        for (let item of items) {
+            var allow = allowed.filter(ex => parseInt(ex) == parseInt(item.thana_code));
+            var disallow = disallowed.filter(ex => parseInt(ex) == parseInt(item.thana_code));
+
+            if (allowed.length && disallowed.length) {
+                if (allow.length && !disallow.length) {
+                    allowedItems.push(item);
+                }
+            } else if (allowed.length) {
+                if (allow.length) {
+                    allowedItems.push(item);
+                }
+            } else if (disallowed.length) {
+                if (!disallow.length) {
+                    allowedItems.push(item);
+                }
+            }
+        }
+    } else {
+        allowedItems = items;
+    }
+    $.each(allowedItems, function (i, ex) {
+        $('<option value="' + ex.thana_code + '">' + ex.thana + '</option>').appendTo(upzElm);
+    });
+}
+
+function onChangePresentUpazila() {
+    var isSame = $("#same_as_present").prop('checked');
+    if (isSame) {
+        $("#permanent_upazila").val(null);
+        $("#same_as_present").click();
+    }
+}
+
+function onChangeExamTypeSSC(elm) {
+    $('#ssc_group').empty().append('<option value selected disabled>Select</option>');
+    var items = subjectGroupSSC.filter(ex => (ex.type == 'G' || ex.type == 'Z'));
+    if (elm.value == 3 || elm.value == 6) {
+        items = subjectGroupSSC.filter(ex => (ex.type == 'T' || ex.type == 'Z'));
+    }
+    $.each(items, function (i, ex) {
+        $('<option value="' + ex.code + '">' + ex.value + '</option>').appendTo($('#ssc_group'));
+    });
+}
+
+function onChangeExamTypeHSC(elm) {
+    $('#hsc_group').empty().append('<option value selected disabled>Select</option>');
+    var items = subjectGroupHSC.filter(ex => (ex.type == 'G' || ex.type == 'Z'));
+    if (elm.value == 4) {
+        items = subjectGroupHSC.filter(ex => (ex.type == 'T' || ex.type == 'Z'));
+    } else if (elm.value == 7) {
+        items = subjectGroupHSC.filter(ex => (ex.type == 'M' || ex.type == 'Z'));
+    } else if (elm.value == 8) {
+        items = subjectGroupHSC.filter(ex => (ex.type == 'V' || ex.type == 'Z'));
+    }
+    $.each(items, function (i, ex) {
+        $('<option value="' + ex.code + '">' + ex.value + '</option>').appendTo($('#hsc_group'));
+    });
+}
+
+function onChangeExamTypeGRA(elm) {
+    $('#gra_subject').empty().append('<option value selected disabled>Select</option>');
+    var items = [];
+    var val = parseInt(elm.value);
+    switch (val) {
+        case 1:
+            items = subjectDegreeListGRA.filter(ex => (ex.type == 'E' || ex.type == 'Z'));
+            break;
+        case 2:
+            items = subjectDegreeListGRA.filter(ex => (ex.type == 'A' || ex.type == 'Z'));
+            break;
+        case 3:
+            items = subjectDegreeListGRA.filter(ex => (ex.type == 'M' || ex.type == 'Z'));
+            break;
+        case 4:
+            items = subjectDegreeListGRA.filter(ex => (ex.type == 'G' || ex.type == 'Z'));
+            break;
+        case 5:
+            items = subjectDegreeListGRA.filter(ex => (ex.type == 'P' || ex.type == 'Z'));
+            break;
+        case 6:
+            items = subjectDegreeListGRA.filter(ex => (ex.type == 'F' || ex.type == 'Z'));
+            break;
+        case 7:
+            items = subjectDegreeListGRA.filter(ex => (ex.type == 'B' || ex.type == 'Z'));
+            break;
+        case 8:
+            items = subjectDegreeListGRA.filter(ex => (ex.type == 'G' || ex.type == 'Z'));
+            break;
+        default:
+            break;
+    }
+
+    $.each(items, function (i, ex) {
+        $('<option value="' + ex.code + '">' + ex.value + '</option>').appendTo($('#gra_subject'));
+    });
+}
+
+function onChangeMasExam(elm) {
+    // $('#mas_subject').empty().append('<option value selected disabled>Select</option>');
+    // var items = [];
+    // var val = parseInt(elm.value);
+    // for (let item of subjectDegreeListMAS) {
+    //     var dd = items.find(ex => ex.value == item.value);
+    //     if (!dd) {
+    //         items.push(item);
+    //     }
+    // }
+
+    // $.each(items, function (i, ex) {
+    //     $('<option value="' + ex.code + '">' + ex.value + '</option>').appendTo($('#mas_subject'));
+    // });
+}
+
+function onChangeResult(elm) {
+    if (elm.value == 4 || elm.value == 5) {
+        $(elm).addClass('resultSelect').closest('div').find('.gpaVal').show().attr('required', true);
+    } else {
+        $(elm).removeClass('resultSelect').closest('div').find('.gpaVal').val('').hide().removeAttr('required');
+    }
+}
+
+function onOffSameAsBtn(elm) {
+    var isSame = $(elm).prop('checked');
+    if (isSame) {
+        if (!$('#present_careof').val() || !$('#present_village').val() || !$('#present_district').val() || !$('#present_upazila').val() || !$('#present_post').val() || !$('#present_postcode').val()) {
+            alert('Please select the present address properly!');
+            $(elm).prop('checked', false);
+            return;
+        }
+
+        $('#permanent_district').val($('#present_district').val());
+        document.getElementById("permanent_district").onchange();
+        $('#permanent_upazila').val($('#present_upazila').val());
+        if (!$('#permanent_district').val()) {
+            alert('The present district isn\'t available in permanent district list!');
+            $(elm).prop('checked', false);
+            return;
+        } else if (!$('#permanent_upazila').val()) {
+            alert('The present upazila isn\'t available in permanent upazila list!');
+            $(elm).prop('checked', false);
+            return;
+        }
+
+        $('#permanent_careof').val($('#present_careof').val()).attr('disabled', true).removeAttr('required');
+        $('#permanent_village').val($('#present_village').val()).attr('disabled', true).removeAttr('required');
+        $('#permanent_district').attr('disabled', true).removeAttr('required');
+        $('#permanent_upazila').attr('disabled', true).removeAttr('required');
+        $('#permanent_post').val($('#present_post').val()).attr('disabled', true).removeAttr('required');
+        $('#permanent_postcode').val($('#present_postcode').val()).attr('disabled', true).removeAttr('required');
+        // $(elm).closest('fieldset').find('legend').css('opacity', 0.5);
+
+    } else {
+        $(elm).closest('fieldset').find('input:not(:checkbox),select,textarea').attr('required', true).removeAttr('disabled');
+        // $(elm).closest('fieldset').find('legend').css('opacity', 1);
+    }
+}
+
+function onKeyupJobDesc(elm) {
+    var len = elm.value.length;
+    $(elm).parent().find('.charLength').text(300 - len);
+}
+
+function ifApplicable(elm) {
+    var isApplicable = $(elm).prop('checked');
+    if (isApplicable) {
+        $(elm).closest('fieldset').find('input:not(:checkbox),select,textarea,button').attr('required', true).removeAttr('disabled');
+        $(elm).closest('fieldset').find('legend').css('opacity', 1);
+    } else {
+        $(elm).closest('fieldset').find('input:not(:checkbox),select,textarea,button').attr('disabled', true).removeAttr('required');
+        $(elm).closest('fieldset').find('legend').css('opacity', 0.5);
+
+        if (!$(elm).closest('fieldset').find('.verified_overlay').is(':visible')) {
+            $(elm).closest('fieldset').find('input:not(:checkbox),select,textarea,button').val(null);
+        }
+    }
+}
+
+function ifApplicableExp(elm) {
+    var isApplicable = $(elm).prop('checked');
+    if (isApplicable) {
+        $(elm).closest('fieldset').find('input:not(.if_applicable_exp),select,textarea,button').attr('required', true).removeAttr('disabled');
+        $('#currently_working').attr('required', false);
+        $(elm).closest('fieldset').find('legend').css('opacity', 1);
+    } else {
+        $(elm).closest('fieldset').find('input:not(.if_applicable_exp),select,textarea,button').val(null).attr('disabled', true).removeAttr('required');
+        $(elm).closest('fieldset').find('legend').css('opacity', 0.5);
+        if ($('.jobExpTemplate').length > 1) {
+            $('.jobExpTemplate:not(:first-child)').remove();
+        }
+        $('#currently_working').prop('checked', false);
+    }
+}
+
+function currentlyWorking(elm) {
+    var isApplicable = $('#if_applicable_exp').prop('checked');
+    if (postInfo.job_exp_required != 1 && !isApplicable) {
+        return;
+    }
+    var isCurrentlyWorking = $(elm).prop('checked');
+    var endDate = $(elm).closest('.end_date_wraper').find('input.job_end_date');
+    if (isCurrentlyWorking) {
+        endDate.val(today).attr('disabled', true).removeAttr('required');
+    } else {
+        endDate.attr('required', true).removeAttr('disabled');
+    }
+}
+
+function getValue(key) {
+    let value = null;
+    var formData = $("form#applicationForm").serializeArray();
+    let entry = formData.find(e => e.name === key);
+    if (entry) {
+        value = entry.value;
+    }
+    return value;
+}
+
+function refreshCaptcha() {
+    var img = document.images['captcha_image'];
+    img.src = img.src.substring(0, img.src.lastIndexOf("?")) + "?rand=" + Math.random() * 1000;
+}
+
+function onMobileInput() {
+    var charCode = (event.which) ? event.which : event.keyCode;
+    if (!charCode || charCode == 8 || charCode == 37 || charCode == 39 || charCode == 46) return true;
+
+    var k = document.all ? parseInt(event.keyCode) : parseInt(event.which);
+    if ((k >= 48 && k <= 57) || (k >= 96 && k <= 105)) {
+        return true;
+    }
+    event.stopPropagation();
+    event.preventDefault();
+    return false;
+}
+
+function onChangeSubUni(elm) {
+    if (elm.value == 999) {
+        $(elm).addClass('otherSelect').closest('div').find('.other_value').show().attr('required', true);
+    } else {
+        $(elm).removeClass('otherSelect').closest('div').find('.other_value').val('').hide().removeAttr('required');
+    }
+}
+
+function onChangeSubGrp(elm) {
+    if (elm.value == 99) {
+        $(elm).addClass('otherSelect').closest('div').find('.other_value').show().attr('required', true);
+    } else {
+        $(elm).removeClass('otherSelect').closest('div').find('.other_value').val('').hide().removeAttr('required');
+    }
+}
+
+function onChangeBoard(elm) {
+    if (elm.value == 99) {
+        $(elm).addClass('otherSelect').closest('div').find('.other_value').show().attr('required', true);
+    } else {
+        $(elm).removeClass('otherSelect').closest('div').find('.other_value').val('').hide().removeAttr('required');
+    }
+}

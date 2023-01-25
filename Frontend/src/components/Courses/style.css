@@ -1,0 +1,50 @@
+.pos {
+  margin-top: -38px;
+  transition-duration: .5s;
+  font-size: 12px;
+  animation-name: anm;
+  animation-duration: .2s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+
+}
+
+.animation {
+  border-radius: 10px;
+}
+
+@keyframes anm {
+  0% {
+    margin-top: -30px;
+  }
+
+  100% {
+    margin-top: -38px;
+  }
+}
+
+@media (min-width:1024px) {
+
+  .hcoursesSlide .slick-prev:before,
+  .hcoursesSlide .slick-next:before {
+    color: white;
+    font-size: 30px;
+    border-radius: 100px;
+    background-color: black;
+    display: none;
+  }
+
+  .hcoursesSlide:hover .slick-prev:before,
+  .hcoursesSlide:hover .slick-next:before {
+    display: inline;
+  }
+
+}
+
+.hcoursesSlide .slick-prev:before {
+  margin-left: -10px;
+}
+
+.hCourse {
+  background: linear-gradient(to bottom, white 20%, #F3F3F3);
+}

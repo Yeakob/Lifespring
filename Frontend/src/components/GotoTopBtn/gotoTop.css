@@ -1,0 +1,23 @@
+.gotoTopBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gotoTopBtn .topBtn{
+    font-size: 2rem;
+    width: 4rem;
+    height: 4rem;
+    color: white;
+    background-color: #96C329;
+    box-shadow: 10px;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}

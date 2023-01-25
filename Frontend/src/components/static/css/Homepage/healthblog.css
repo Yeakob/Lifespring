@@ -1,0 +1,18 @@
+.healthBlog .slick-dots li button::before {
+    content: "•";
+    font-size: 10px;
+    font-weight: 700;
+
+}
+
+.healthBlog .slick-dots li,
+.slick-dots li button {
+    width: 15px;
+}
+.healthBlog .slick-prev:before,
+.healthBlog .slick-next:before {
+  color: black;
+  background-color: transparent;
+  border-radius: 60%;
+  font-size: 25px;
+}

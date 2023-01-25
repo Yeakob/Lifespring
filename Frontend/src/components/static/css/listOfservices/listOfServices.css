@@ -1,0 +1,24 @@
+.cardImage {
+    background-image:linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 1)),
+    url('https://lifespringcdn.s3.amazonaws.com/wp-content/uploads/2021/12/Counselling.jpg');
+    width: 100%;
+    background-size: cover;
+    color: white;
+    padding: 20px;
+}
+.cardImage1 {
+    background-image:linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 1)),
+    url('https://lifespringcdn.s3.amazonaws.com/wp-content/uploads/2021/12/Corporate-1.jpg');
+    width: 100%;
+    background-size: cover;
+    color: white;
+    padding: 20px;
+}
+.cardImage2 {
+    background-image:linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 1)),
+    url('https://lifespringcdn.s3.amazonaws.com/wp-content/uploads/2021/12/child-development.jpg');
+    width: 100%;
+    background-size: cover;
+    color: white;
+    padding: 20px;
+}

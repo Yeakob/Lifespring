@@ -1,0 +1,137 @@
+[
+    {   
+        "id": 1,
+        "name": "Yahia MD Amin",
+        "prof": "PSYCHOLOGIST",
+        "img": "/img/HPImage/yahia-amin.jpg",
+        "degree": ""
+    },
+    {
+        "id": 2,
+        "name": "Dr. Sayedul Ashraf",
+        "prof": "PSYCHIATRIST",
+        "img": "/img/HPImage/sayedul-ashraf.jpg",
+        "degree": ""
+    },
+    {
+        "id": 3,
+        "name": "Dr. Aklima Zakaria Zinan",
+        "prof": "GYNECOLOGIST",
+        "img": "/img/HPImage/aklima.jpg",
+        "degree": ""
+    },
+    {
+        "id": 4,
+        "name": "Dr. Kamrun Nahar",
+        "prof": "GYNECOLOGIST",
+        "img": "/img/HPImage/kamrun.jpg",
+        "degree": ""
+    },
+   
+    {
+        "id": 5,
+        "name": "Mr. Md. Mehedi Hasan",
+        "prof": "PSYCHOLOGIST",
+        "img": "/img/HPImage/mehedi.jpg",
+        "degree": "M.S. Counselling Psychology (DU)"
+    },
+    {
+        "id": 6,
+        "name": "Mr. Md. Mehedi Hasan",
+        "prof": "PSYCHOLOGIST",
+        "img": "/img/HPImage/mehedi.jpg",
+        "degree": "M.S. Counselling Psychology (DU)"
+    },
+    {
+        "id": 7,
+        "name": "Dr. Tumpa Indrani Ghose",
+        "prof": "CHILD-ADOLESCENT-PSYCHIATRIST",
+        "img": "/img/HPImage/tumpa.jpeg",
+        "degree": "M.S. Counselling Psychology (DU)"
+    },
+    {
+        "id": 8,
+        "name": "Sonia Hasan",
+        "prof": "DEVELOPMENTAL-THERAPIST",
+        "img": "/img/HPImage/munmum-jahan.jpg",
+        "degree": "M.S. Counselling Psychology (DU)"
+    },
+    {
+        "id": 9,
+        "name": "Dr. Shafika Afroz",
+        "prof": "COUNSELOR",
+        "img": "/img/HPImage/munmum-jahan.jpg",
+        "degree": "M.S. Counselling Psychology (DU)"
+    },
+    {
+        "id": 10,
+        "name": "Dr. Aklima Zakaria Zinan",
+        "prof": "GYNECOLOGIST",
+        "img": "/img/HPImage/munmum-jahan.jpg",
+        "degree": ""
+    },
+    {
+        "id": 11,
+        "name": "Dr. Kamrun Nahar",
+        "prof": "GYNECOLOGIST",
+        "img": "/img/HPImage/munmum-jahan.jpg",
+        "degree": ""
+    },
+    
+    {
+        "id": 12,
+        "name": "Md. Hasibul Azim Akash",
+        "prof": "PSYCHOLOGIST",
+        "img": "/img/HPImage/munmum-jahan.jpg",
+        "degree": "MS in Educational Psychology, DU"
+    },
+    {
+        "id": 13,
+        "name": "Dr. Afroza Jesmin",
+        "prof": "DERMATOLOGIST",
+        "img": "/img/HPImage/munmum-jahan.jpg",
+        "degree": "M.S. Counselling Psychology (DU)"
+    },
+    {
+        "id": 14,
+        "name": "Dr. Hasnainul Islam",
+        "prof": "DERMATOLOGIST",
+        "img":  "/img/HPImage/mithila.jpg",
+        "degree": "M.S. Counselling Psychology (DU)"
+    },
+    {
+        "id": 15,
+        "name": "Dr. Mahmud Asif Rifat",
+        "prof": "ENT",
+        "img": "/img/HPImage/Nafia-Farzana.jpg",
+        "degree": "M.S. Counselling Psychology (DU)"
+    },
+    {
+        "id": 16,
+        "name": "Dr Munira Afroz Siddika",
+        "prof": "INTERNAL-MEDICINE",
+        "img": "/img/HPImage/Nafia-Farzana.jpg",
+        "degree": "M.S. Counselling Psychology (DU)"
+    },
+    {
+        "id": 17,
+        "name": "Dr. Sajib Kumar",
+        "prof": "DERMATOLOGIST",
+        "img": "/img/HPImage/Nafia-Farzana.jpg",
+        "degree": "M.S. Counselling Psychology (DU)"
+    },
+    {
+        "id": 18,
+        "name": "Md. Hasibul Azim Akash",
+        "prof": "PSYCHOLOGIST",
+        "img": "/img/HPImage/Nafia-Farzana.jpg",
+        "degree": "MS in Educational Psychology, DU"
+    },
+    {
+        "id": 19,
+        "name": "Dr. Kamrun Nahar",
+        "prof": "Sexual Health",
+        "img": "/img/HPImage/munmum-jahan.jpg",
+        "degree": ""
+    }    
+]

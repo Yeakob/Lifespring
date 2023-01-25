@@ -1,0 +1,30 @@
+@media(min-width:1024px) {
+    .carousel .slick-prev:before,
+    .carousel .slick-next:before {
+        color: black;
+        background-color: transparent;
+        font-size: 50px;
+    }
+    .carousel .slick-next:before{
+        margin-left: -20px;
+    }
+    .carousel .slick-prev:before{
+        margin-left: -10px;
+    }
+    .carousel .slick-dots li button::before{
+        font-size: 15px;
+        color: #1B8700;
+    }    
+}
+
+
+.hOne-Shadow{
+    text-shadow: 1px 1px 10px rgb(102, 101, 101);
+}
+.bannerbg{
+    background: linear-gradient(to bottom, #E4FAFF, white);
+
+}
+.mbtn-shadow{
+    box-shadow: 1px 1px 5px green;;
+}

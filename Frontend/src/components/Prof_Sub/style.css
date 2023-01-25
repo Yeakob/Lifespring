@@ -1,0 +1,29 @@
+.line
+{
+    width: 0px;
+    height: 2px ;
+    background-color: black;
+    transition-duration: .5s;
+    
+
+}
+.mark:hover .line
+{
+  width: 30px;
+  height: 2px;
+}
+
+.line1
+{
+    width: 0px;
+    height: 2px ;
+    background-color: black;
+    transition-duration: .5s;
+    
+
+}
+.mark:hover .line1
+{
+  width: 110px;
+  height: 2px;
+}

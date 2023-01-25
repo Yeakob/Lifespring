@@ -1,0 +1,114 @@
+[
+    {   
+        "id": 1,
+        "name": "Combo Offer!! (Emotional Selfcare & Positive Parenting)",
+        "details": "🌟🌟🌟 লাইফস্প্রিংয়ের বিশেষ এই Combo Offer সম্পর্কে যেকোনো তথ্য জানতে …",
+        "price" : 5000,
+        "img": "/img/Courses/Image-1.jpg",
+        "tag1": "All Levels",
+        "tag2": "",
+        "tag3": "",
+        "info": "Featured",
+        "catagory":"offer"
+    },
+    {   
+        "id": 2,
+        "name": "Clinical Mental Health",
+        "details": "-Are you a student of Psychology/ Psychiatry? -Are you a …",
+        "price" : 5000,
+        "img": "/img/Courses/Image-2.jpg",
+        "tag1": "All Levels",
+        "tag2": "",
+        "tag3": "",
+        "info": "",
+        "catagory":"certification"
+    }
+    ,
+    {   
+        "id": 3,
+        "name": "GET FIT with Yahia Amin & Dr. Kushal",
+        "details": "সুস্থতা অমূল্য। কথায় আছে, স্বাস্থ্যই সকল সুখের মূল! কিন্তু আপনি …",
+        "price" : 20000,
+        "img": "/img/Courses/Image-3.jpg",
+        "tag1": "All Levels",
+        "tag2": "",
+        "tag3": "",
+        "info": "-50%",
+        "catagory":"physical"
+    }
+    ,
+    {   
+        "id": 4,
+        "name": "Emotional Selfcare",
+        "details": "দিনের পর দিন যে অব্যক্ত কষ্টগুলো বুকে বাসা বেঁধে আছে …",
+        "price" : 5000,
+        "img": "/img/Courses/Image-4.jpg",
+        "tag1": "All Levels",
+        "tag2": "16 hours",
+        "tag3": "44 Lessons",
+        "info": "Featured",
+        "catagory":"emotional"
+    },
+    {   
+        "id": 5,
+        "name": "Training on Positive Parenting",
+        "details": "আমরা সবাই আমাদের সন্তানের জন্য সবসময় ভালটা চাই, তাদের সার্বিক …",
+        "price" : 5000,
+        "img": "/img/Courses/Image-5.jpg",
+        "tag1": "All Levels",
+        "tag2": "12 hours",
+        "tag3": "53 Lessons",
+        "info": "",
+        "catagory":"child"
+    },
+    {   
+        "id": 6,
+        "name": "Purify with Yahia Amin",
+        "details": "আপনার জীবনকে পুনরায় গড়ে তুলুন সাইকোলজি এবং স্পিরিচুয়ালিটির মাধ্যমে জীবনকে …",
+        "price" : 1000,
+        "img": "/img/Courses/Image-6.jpg",
+        "tag1": "All Levels",
+        "tag2": "15 hours",
+        "tag3": "37 Lessons",
+        "info": "",
+        "catagory":"spritual"
+    }
+    ,
+    {   
+        "id": 7,
+        "name": "Relationship & Intimacy Training (Online)",
+        "details": "জীবনের সম্পর্কগুলো থেকে আমরা কী আশা করি? কেউ বলবে ভালবাসা …",
+        "price" : 5000,
+        "img": "/img/Courses/Image-7.jpg",
+        "tag1": "All Levels",
+        "tag2": "",
+        "tag3": "15 Lessons",
+        "info": "",
+        "catagory":"relationship"
+    }
+    ,
+    {   
+        "id": 8,
+        "name": "Complete Pregnancy Guide",
+        "details": "গর্ভকালীন সময় যেকোনো নারীর জীবনের অন্যতম গুরুত্বপূর্ণ একটি মুহূর্ত, কেননা …",
+        "price" : 5000,
+        "img": "/img/Courses/Image-8.jpg",
+        "tag1": "All Levels",
+        "tag2": "",
+        "tag3": "11 Lessons",
+        "info": "",
+        "catagory":"physical"
+    } ,
+    {   
+        "id": 9,
+        "name": "Course on Life-Mapping",
+        "details": "Life-mapping is an effective method that, if known and followed, …",
+        "price" : 5000,
+        "img": "/img/Courses/Image-9.jpg",
+        "tag1": "All Levels",
+        "tag2": "",
+        "tag3": "11 Lessons",
+        "info": "",
+        "catagory":"physical"
+    }
+]
